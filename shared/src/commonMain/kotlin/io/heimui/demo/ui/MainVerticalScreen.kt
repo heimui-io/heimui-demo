@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -185,6 +186,12 @@ fun MainVerticalScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                // `padding` insets the content but does not tell anything below that the window
+                // insets are already handled. Without this, a payload with `apply_safe_insets`
+                // applies the status and navigation bars a *second* time and the screen sits ~22dp
+                // too low. Consuming them makes the SDK's own `windowInsetsPadding` resolve to
+                // zero, so the payload keeps its host-independent default and still lands right.
+                .consumeWindowInsets(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             // The server-driven screen. Everything above is app chrome; this is the payload.

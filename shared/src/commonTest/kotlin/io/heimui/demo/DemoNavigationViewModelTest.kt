@@ -90,17 +90,31 @@ class DemoNavigationViewModelTest {
     @Test
     fun `a deep link navigates just like a navigate action`() {
         val vm = viewModel()
-        vm.onHeimAction(OpenUrlAction(url = "heimui://showcase/paywall"))
+        vm.onDeepLink("heimui://showcase/paywall")
 
         assertEquals("paywall", assertIs<DemoDestination.Vertical>(vm.destination.value).verticalId)
     }
 
     @Test
-    fun `an external url is left alone`() {
+    fun `a deep link to a screen carries through to a detail destination`() {
         val vm = viewModel()
-        vm.onHeimAction(OpenUrlAction(url = "https://heimui.io/terms"))
+        vm.onDeepLink("heimui://showcase/ecommerce/product_detail.json")
 
-        // Opening it is the SDK's job, subject to its scheme policy. Navigation must not react.
+        val detail = assertIs<DemoDestination.Detail>(vm.destination.value)
+        assertEquals("ecommerce/product_detail.json", detail.screenId)
+    }
+
+    @Test
+    fun `a url the launcher did not claim does not move navigation`() {
+        val vm = viewModel()
+
+        // The app's HeimUrlLauncher claims only `heimui://` and routes it to onDeepLink. Anything
+        // else goes to the platform under the SDK's scheme policy, and must not navigate — an
+        // OpenUrlAction still reaches onHeimAction afterwards either way.
+        vm.onDeepLink("https://heimui.io/terms")
+        vm.onHeimAction(OpenUrlAction(url = "https://heimui.io/terms"))
+        vm.onHeimAction(OpenUrlAction(url = "heimui://showcase/paywall"))
+
         assertEquals(DemoDestination.Hub, vm.destination.value)
     }
 

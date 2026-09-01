@@ -3,6 +3,8 @@ package io.heimui.demo
 import androidx.compose.runtime.Composable
 import io.heimui.demo.designsystem.DemoTheme
 import io.heimui.demo.di.rememberDemoDependencies
+import androidx.lifecycle.viewmodel.compose.viewModel
+import io.heimui.demo.presentation.DemoNavigationViewModel
 import io.heimui.demo.presentation.navigation.DemoNavHost
 
 /**
@@ -25,8 +27,20 @@ import io.heimui.demo.presentation.navigation.DemoNavHost
 @Composable
 fun App() {
     val dependencies = rememberDemoDependencies()
+    val navigationViewModel: DemoNavigationViewModel = viewModel { DemoNavigationViewModel() }
 
-    DemoTheme(telemetryObserver = dependencies.telemetry) {
-        DemoNavHost(dependencies = dependencies)
+    DemoTheme(
+        telemetryObserver = dependencies.telemetry,
+        // Lets the action pipeline refuse a submission while signed out, before it reaches the
+        // network rather than after.
+        session = dependencies.session,
+        // `heimui://` links are claimed by the app's launcher and routed here, instead of being
+        // handed to the OS and re-entering through a cold start.
+        onDeepLink = navigationViewModel::onDeepLink,
+    ) {
+        DemoNavHost(
+            dependencies = dependencies,
+            navigationViewModel = navigationViewModel,
+        )
     }
 }

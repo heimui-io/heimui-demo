@@ -6,6 +6,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -84,6 +85,9 @@ fun HubScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                // Tells the payload's own `apply_safe_insets` that the window insets are already
+                // handled, so it does not apply the status bar a second time. See MainVerticalScreen.
+                .consumeWindowInsets(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
         ) {
             HeimScreen(

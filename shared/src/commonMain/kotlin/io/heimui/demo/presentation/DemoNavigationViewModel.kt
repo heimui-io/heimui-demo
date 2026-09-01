@@ -84,10 +84,8 @@ class DemoNavigationViewModel : ViewModel() {
             // SDK refuses to hand an unknown scheme to the platform launcher — that is the
             // defence against intent:// and file:// — but still forwards the action so the app
             // can interpret its own links.
-            is OpenUrlAction -> action.url
-                .takeIf { it.startsWith(DEEP_LINK_PREFIX) }
-                ?.removePrefix(DEEP_LINK_PREFIX)
-                ?.let { navigateTo(it, emptyMap()) }
+            // Handled by the app's HeimUrlLauncher before it reaches here — see [onDeepLink].
+            is OpenUrlAction -> Unit
 
             else -> Unit
         }
@@ -115,6 +113,20 @@ class DemoNavigationViewModel : ViewModel() {
         if (_backStack.value.lastOrNull() != next) {
             _backStack.update { it + next }
         }
+    }
+
+
+    /**
+     * Routes a deep link the app's own URL launcher claimed.
+     *
+     * Called instead of letting the platform open it: `heimui://showcase/fintech` handed to the
+     * OS would leave the app and come back through a cold start, losing the back stack. The
+     * launcher returns `true` to say it was handled, and this is where "handled" happens.
+     */
+    fun onDeepLink(url: String) {
+        url.takeIf { it.startsWith(DEEP_LINK_PREFIX) }
+            ?.removePrefix(DEEP_LINK_PREFIX)
+            ?.let { navigateTo(it, emptyMap()) }
     }
 
     private companion object {

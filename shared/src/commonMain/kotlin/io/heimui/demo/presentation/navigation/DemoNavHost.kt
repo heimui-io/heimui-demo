@@ -25,8 +25,12 @@ import io.heimui.demo.ui.SplashScreen
  * translation happens in [DemoNavigationViewModel.onHeimAction], not here and not in the SDK.
  */
 @Composable
-fun DemoNavHost(dependencies: DemoDependencies) {
-    val navigationViewModel: DemoNavigationViewModel = viewModel { DemoNavigationViewModel() }
+fun DemoNavHost(
+    dependencies: DemoDependencies,
+    // Hoisted rather than created here: the theme installs a URL launcher that routes the app's
+    // own deep links straight into it, and both need the same instance.
+    navigationViewModel: DemoNavigationViewModel = viewModel { DemoNavigationViewModel() },
+) {
     val destination by navigationViewModel.destination.collectAsStateWithLifecycle()
 
     when (val current = destination) {

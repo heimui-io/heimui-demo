@@ -37,11 +37,20 @@ android {
     }
     buildTypes {
         release {
-            isMinifyEnabled = false
+            // On, and deliberately so. HeimUI drives every screen through kotlinx.serialization
+            // with a polymorphic `type` discriminator, which is exactly the shape R8 breaks
+            // silently: the app compiles, installs, and then fails to parse a payload it handled
+            // fine in debug. The SDK ships consumer keep rules for this, and a showcase that
+            // never runs R8 never proves they work.
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Debug keys so `assembleRelease` produces something installable. A real app signs
+            // with its own release keystore.
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
