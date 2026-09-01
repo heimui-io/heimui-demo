@@ -1,0 +1,84 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "product_detail",
+  "version": "1.0.0",
+  "title": "Product detail",
+  "root": {
+    "type": "container",
+    "id": "root",
+    "padding": 20,
+    "spacing": 16,
+    "children": [
+      {
+        "type": "badge",
+        "id": "stock_tag",
+        "text": "⚡ ONLY 3 LEFT",
+        "background_color": "#00E5FF",
+        "text_color": "#0B0F19"
+      },
+      {
+        "type": "text",
+        "id": "product_name",
+        "text": "Neural X1 · Pro Headphones",
+        "style": "headlineSmall",
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "id": "product_price",
+        "text": "$489.000",
+        "style": "titleLarge",
+        "color": "#00E5FF"
+      },
+      {
+        "type": "image",
+        "id": "product_photo",
+        "url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800",
+        "aspect_ratio": 1.4,
+        "corner_radius": 16
+      },
+      {
+        "type": "text",
+        "id": "product_desc",
+        "text": "Active noise cancelling, 40 h battery and spatial audio. This screen arrived from the server with the product id as a query parameter.",
+        "style": "bodyMedium",
+        "color": "#94A3B8"
+      },
+      {
+        "type": "divider",
+        "id": "sep"
+      },
+      {
+        "type": "text",
+        "id": "params_demo_title",
+        "text": "How this screen got here",
+        "style": "titleSmall",
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "text",
+        "id": "params_demo_body",
+        "text": "The catalog dispatched navigate with params { product_id }. The app passed them to HeimScreen as queryParams and the SDK appended them to the request. The backend answered with THIS product.",
+        "style": "bodySmall",
+        "color": "#94A3B8"
+      },
+      {
+        "type": "button",
+        "id": "add_to_cart",
+        "title": "Add to cart",
+        "variant": "FILLED",
+        "is_full_width": true,
+        "actions": [
+          {
+            "type": "show_snackbar",
+            "message": "Neural X1 added to cart",
+            "duration": "SHORT"
+          },
+          {
+            "type": "dismiss"
+          }
+        ]
+      }
+    ]
+  }
+}

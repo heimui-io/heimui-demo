@@ -1,0 +1,167 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "ecommerce_home",
+  "version": "1.0.0",
+  "title": "Store Deals",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "ecom_home_col",
+    "spacing": 16,
+    "padding": 16,
+    "items": [
+      {
+        "type": "card",
+        "id": "hero_promo",
+        "background_color": "#161D2F",
+        "border_color": "#00E5FF",
+        "corner_radius": 16,
+        "padding": 18,
+        "actions": [
+          {
+            "type": "show_snackbar",
+            "message": "🔥 Summer Sale Campaign Activated!"
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "hero_content",
+          "direction": "VERTICAL",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "badge",
+              "id": "b_deal",
+              "text": "⚡ FLASH SALE · 50% OFF",
+              "background_color": "#00E5FF",
+              "text_color": "#0B0F19"
+            },
+            {
+              "type": "text",
+              "id": "t_hero",
+              "text": "Cyberpunk Gear & Tech",
+              "style": "headlineSmall",
+              "color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "t_sub",
+              "text": "Streamed dynamically from HeimUI backend without app store releases.",
+              "style": "bodySmall",
+              "color": "#94A3B8"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "id": "cat_hdr",
+        "text": "Featured Categories",
+        "style": "titleMedium",
+        "color": "#00E5FF"
+      },
+      {
+        "type": "lazy_row",
+        "id": "cats_row",
+        "spacing": 10,
+        "items": [
+          {
+            "type": "badge",
+            "id": "c1",
+            "text": "🎧 Audio Pro",
+            "background_color": "#4F46E5",
+            "text_color": "#FFFFFF"
+          },
+          {
+            "type": "badge",
+            "id": "c2",
+            "text": "⌚ Smartwatches",
+            "background_color": "#1E293B",
+            "text_color": "#E2E8F0"
+          },
+          {
+            "type": "badge",
+            "id": "c3",
+            "text": "⌨️ Keyboards",
+            "background_color": "#1E293B",
+            "text_color": "#E2E8F0"
+          },
+          {
+            "type": "badge",
+            "id": "c4",
+            "text": "📱 Mobile",
+            "background_color": "#1E293B",
+            "text_color": "#E2E8F0"
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "id": "promo_overlay",
+        "content_alignment": "CENTER",
+        "children": [
+          {
+            "type": "image",
+            "id": "promo_bg",
+            "url": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800",
+            "aspect_ratio": 2.2,
+            "corner_radius": 16
+          },
+          {
+            "type": "badge",
+            "id": "promo_tag",
+            "text": "⚡ 2-FOR-1 ALL DAY",
+            "background_color": "brand_primary",
+            "text_color": "surface_base"
+          }
+        ]
+      },
+      {
+        "type": "spacer",
+        "id": "promo_gap",
+        "size": 8
+      },
+      {
+        "type": "button",
+        "id": "btn_terms",
+        "title": "View terms",
+        "variant": "OUTLINED",
+        "is_full_width": true,
+        "actions": [
+          {
+            "type": "show_bottom_sheet",
+            "title": "Promotion terms",
+            "is_dismissible": true,
+            "content": {
+              "type": "container",
+              "id": "terms_sheet",
+              "padding": 8,
+              "spacing": 16,
+              "scrollable": false,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "terms_body",
+                  "style": "legal",
+                  "text": "Offer valid while stocks last. This text uses the 'legal' brand token, registered by the app — the server only names it."
+                },
+                {
+                  "type": "button",
+                  "id": "terms_close",
+                  "title": "Got it",
+                  "variant": "FILLED",
+                  "is_full_width": true,
+                  "actions": [
+                    {
+                      "type": "dismiss_modal"
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

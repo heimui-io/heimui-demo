@@ -1,0 +1,77 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "ecommerce_catalog",
+  "version": "1.0.0",
+  "title": "Product Catalog",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "catalog_col",
+    "spacing": 14,
+    "padding": 16,
+    "items": [
+      {
+        "type": "text",
+        "id": "cat_title",
+        "text": "Top Trending Hardware",
+        "style": "titleMedium",
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "card",
+        "id": "item_1",
+        "background_color": "#1E293B",
+        "corner_radius": 12,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "ecommerce/product_detail.json",
+            "params": {
+              "product_id": "sku_neural_x1",
+              "title": "Neural X1"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "item_row_1",
+          "direction": "HORIZONTAL",
+          "spacing": 12,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_h",
+              "name": "headphones",
+              "tint": "#00E5FF",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "info_h",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "n_h",
+                  "text": "Heimdall ANC Cyber Headphones",
+                  "style": "bodyLarge",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "p_h",
+                  "text": "$299.00 USD · Tap for details",
+                  "style": "bodySmall",
+                  "color": "#00E5FF"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

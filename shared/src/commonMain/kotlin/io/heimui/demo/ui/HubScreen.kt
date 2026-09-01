@@ -24,18 +24,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.sp
 import heimui_demo.shared.generated.resources.Res
+import heimui_demo.shared.generated.resources.hub_badge
+import heimui_demo.shared.generated.resources.app_name
 import heimui_demo.shared.generated.resources.heimui_avatar
 import io.heimui.core.domain.model.action.HeimAction
-import io.heimui.core.domain.repository.HeimScreenRepository
 import io.heimui.core.presentation.HeimScreen
 import org.jetbrains.compose.resources.painterResource
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HubScreen(
-    repository: HeimScreenRepository,
+    hubScreenId: String,
     onAction: (HeimAction) -> Unit
 ) {
     Scaffold(
@@ -49,31 +51,31 @@ fun HubScreen(
                             modifier = Modifier
                                 .size(30.dp)
                                 .clip(CircleShape)
-                                .border(1.dp, Color(0xFF00E5FF), CircleShape)
+                                .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = "HeimUI",
+                            text = stringResource(Res.string.app_name),
                             style = MaterialTheme.typography.titleLarge,
-                            color = Color(0xFF00E5FF)
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.width(10.dp))
                         Box(
                             modifier = Modifier
-                                .background(Color(0xFF4F46E5), RoundedCornerShape(12.dp))
+                                .background(MaterialTheme.colorScheme.secondary, RoundedCornerShape(12.dp))
                                 .padding(horizontal = 8.dp, vertical = 2.dp)
                         ) {
                             Text(
-                                text = "SHOWCASE HUB",
+                                text = stringResource(Res.string.hub_badge),
                                 fontSize = 10.sp,
-                                color = Color.White
+                                color = MaterialTheme.colorScheme.onSurface
                             )
                         }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF0B0F19),
-                    titleContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         }
@@ -82,12 +84,11 @@ fun HubScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFF0B0F19))
+                .background(MaterialTheme.colorScheme.background)
         ) {
             HeimScreen(
-                screenId = "hub_screen",
-                repository = repository,
-                onAction = onAction,
+                screenId = hubScreenId,
+                                onAction = onAction,
                 modifier = Modifier.fillMaxSize()
             )
         }

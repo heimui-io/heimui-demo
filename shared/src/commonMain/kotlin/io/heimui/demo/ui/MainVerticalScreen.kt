@@ -17,7 +17,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,73 +51,39 @@ import heimui_demo.shared.generated.resources.Res
 import heimui_demo.shared.generated.resources.heimui_avatar
 import io.heimui.core.domain.model.action.HeimAction
 import io.heimui.core.presentation.HeimScreen
-import io.heimui.demo.data.HeimRemoteRepositoryProvider
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import io.heimui.demo.devtools.SduiSourceInspector
+import io.heimui.demo.domain.repository.DemoCatalogRepository
+import io.heimui.demo.presentation.VerticalViewModel
+import heimui_demo.shared.generated.resources.cd_back
+import heimui_demo.shared.generated.resources.cd_view_source
+import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
-
-data class VerticalTabSpec(
-    val title: String,
-    val screenId: String,
-    val iconEmoji: String
-)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainVerticalScreen(
     verticalId: String,
-    repository: HeimRemoteRepositoryProvider,
+    catalog: DemoCatalogRepository,
+    sourceInspector: SduiSourceInspector,
     onBack: () -> Unit,
     onAction: (HeimAction) -> Unit
 ) {
-    val (headerTitle, tabs) = remember(verticalId) {
-        when (verticalId) {
-            "ecommerce" -> "🛒 E-Commerce & Deals" to listOf(
-                VerticalTabSpec("Deals", "ecommerce_home", "🔥"),
-                VerticalTabSpec("Catalog", "ecommerce_catalog", "📦"),
-                VerticalTabSpec("Orders", "ecommerce_profile", "📜")
-            )
-            "fintech" -> "💳 Fintech & Banking" to listOf(
-                VerticalTabSpec("Balance", "fintech_dashboard", "💳"),
-                VerticalTabSpec("KYC Form", "fintech_kyc", "📝"),
-                VerticalTabSpec("Limits", "fintech_limits", "🛡️")
-            )
-            "food" -> "🍔 Food Delivery" to listOf(
-                VerticalTabSpec("Kitchens", "food_feed", "🍕"),
-                VerticalTabSpec("Live Order", "food_tracking", "🛵"),
-                VerticalTabSpec("Locations", "food_account", "📍")
-            )
-            "paywall" -> "💎 SaaS & Paywall" to listOf(
-                VerticalTabSpec("Plans", "paywall_plans", "💎"),
-                VerticalTabSpec("Team", "paywall_seats", "👥"),
-                VerticalTabSpec("Usage", "paywall_usage", "⚡")
-            )
-            "storybook" -> "⚡ Primitives Storybook" to listOf(
-                VerticalTabSpec("Primitives", "storybook_primitives", "🎨"),
-                VerticalTabSpec("Plugin", "storybook_custom", "📈"),
-                VerticalTabSpec("Tokens", "storybook_tokens", "🌈")
-            )
-            else -> "📱 Showcase View" to listOf(
-                VerticalTabSpec("Tab 1", "ecommerce_home", "1️⃣"),
-                VerticalTabSpec("Tab 2", "ecommerce_catalog", "2️⃣"),
-                VerticalTabSpec("Tab 3", "ecommerce_profile", "3️⃣")
-            )
-        }
+    // `key` scopes the ViewModel to the vertical: navigating to a different one gets a fresh
+    // instance instead of leaking the previous tab selection.
+    val viewModel: VerticalViewModel = viewModel(key = verticalId) {
+        VerticalViewModel(verticalId, catalog, sourceInspector)
     }
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
 
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-    var isJsonSheetOpen by remember { mutableStateOf(false) }
-    var rawJsonContent by remember { mutableStateOf("") }
-
-    val currentScreenId = tabs[selectedTabIndex].screenId
-
-    LaunchedEffect(currentScreenId, isJsonSheetOpen) {
-        if (isJsonSheetOpen) {
-            try {
-                rawJsonContent = repository.fetchRawJson(currentScreenId)
-            } catch (e: Throwable) {
-                rawJsonContent = "Failed to load raw JSON: ${e.message}"
-            }
-        }
-    }
+    // This composable owns no state of its own: it renders `state` and forwards intents.
+    val headerTitle = state.title
+    val tabs = state.tabs
+    val selectedTabIndex = state.selectedTabIndex
+    val isJsonSheetOpen = state.isSourceSheetOpen
+    val rawJsonContent = state.rawJson ?: if (state.isLoadingRawJson) "Loading…" else ""
+    val currentScreenId = state.currentScreenId
 
     Scaffold(
         topBar = {
@@ -126,49 +96,53 @@ fun MainVerticalScreen(
                             modifier = Modifier
                                 .size(24.dp)
                                 .clip(CircleShape)
-                                .border(1.dp, Color(0xFF00E5FF), CircleShape)
+                                .border(1.dp, MaterialTheme.colorScheme.primary, CircleShape)
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
                             text = headerTitle,
                             style = MaterialTheme.typography.titleMedium,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onSurface
                         )
                     }
                 },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Text(text = "←", fontSize = 22.sp, color = Color(0xFF00E5FF))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(Res.string.cd_back),
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF0B0F19),
-                    titleContentColor = Color.White
+                    containerColor = MaterialTheme.colorScheme.background,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface
                 )
             )
         },
         bottomBar = {
             NavigationBar(
-                containerColor = Color(0xFF161D2F),
-                contentColor = Color(0xFF00E5FF)
+                containerColor = MaterialTheme.colorScheme.surface,
+                contentColor = MaterialTheme.colorScheme.primary
             ) {
                 tabs.forEachIndexed { index, tabSpec ->
                     NavigationBarItem(
                         selected = selectedTabIndex == index,
-                        onClick = { selectedTabIndex = index },
+                        onClick = { viewModel.onTabSelected(index) },
                         icon = {
-                            Text(text = tabSpec.iconEmoji, fontSize = 20.sp)
+                            Text(text = tabSpec.icon, fontSize = 20.sp)
                         },
                         label = {
                             Text(
                                 text = tabSpec.title,
                                 fontSize = 11.sp,
-                                color = if (selectedTabIndex == index) Color(0xFF00E5FF) else Color(0xFF94A3B8)
+                                color = if (selectedTabIndex == index) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                             )
                         },
                         colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = Color(0xFF00E5FF),
-                            indicatorColor = Color(0xFF1E293B)
+                            selectedIconColor = MaterialTheme.colorScheme.primary,
+                            indicatorColor = MaterialTheme.colorScheme.surfaceVariant
                         )
                     )
                 }
@@ -176,11 +150,15 @@ fun MainVerticalScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { isJsonSheetOpen = true },
-                containerColor = Color(0xFF00E5FF),
-                contentColor = Color(0xFF0B0F19)
+                onClick = { viewModel.onToggleSourceSheet(true) },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.background
             ) {
-                Text(text = "</>", style = MaterialTheme.typography.titleMedium)
+                Icon(
+                    imageVector = Icons.Default.Code,
+                    contentDescription = stringResource(Res.string.cd_view_source),
+                    tint = MaterialTheme.colorScheme.onPrimary,
+                )
             }
         }
     ) { paddingValues ->
@@ -188,21 +166,23 @@ fun MainVerticalScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
-                .background(Color(0xFF0B0F19))
+                .background(MaterialTheme.colorScheme.background)
         ) {
-            HeimScreen(
-                screenId = currentScreenId,
-                repository = repository,
-                onAction = onAction,
-                modifier = Modifier.fillMaxSize()
-            )
+            // The server-driven screen. Everything above is app chrome; this is the payload.
+            if (currentScreenId != null) {
+                HeimScreen(
+                    screenId = currentScreenId,
+                    onAction = onAction,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
 
         // Live JSON Inspector Modal
         if (isJsonSheetOpen) {
             ModalBottomSheet(
-                onDismissRequest = { isJsonSheetOpen = false },
-                containerColor = Color(0xFF161D2F)
+                onDismissRequest = { viewModel.onToggleSourceSheet(false) },
+                containerColor = MaterialTheme.colorScheme.surface
             ) {
                 Column(
                     modifier = Modifier
@@ -214,20 +194,20 @@ fun MainVerticalScreen(
                         Text(
                             text = "⚡ Remote SDUI JSON ($currentScreenId)",
                             style = MaterialTheme.typography.titleMedium,
-                            color = Color(0xFF00E5FF)
+                            color = MaterialTheme.colorScheme.primary
                         )
                     }
                     Spacer(modifier = Modifier.height(12.dp))
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .background(Color(0xFF0B0F19), RoundedCornerShape(8.dp))
-                            .border(1.dp, Color(0xFF334155), RoundedCornerShape(8.dp))
+                            .background(MaterialTheme.colorScheme.background, RoundedCornerShape(8.dp))
+                            .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
                             .padding(14.dp)
                     ) {
                         Text(
                             text = if (rawJsonContent.isNotBlank()) rawJsonContent else "Loading remote payload from GitHub Raw...",
-                            color = Color(0xFFE2E8F0),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 12.sp,
                             fontFamily = FontFamily.Monospace
                         )

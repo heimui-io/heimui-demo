@@ -1,0 +1,81 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "fintech_dashboard",
+  "version": "1.0.0",
+  "title": "Account Balance",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "fin_dash_col",
+    "spacing": 16,
+    "padding": 16,
+    "items": [
+      {
+        "type": "card",
+        "id": "card_virtual",
+        "background_color": "#161D2F",
+        "border_color": "#A855F7",
+        "corner_radius": 18,
+        "padding": 20,
+        "child": {
+          "type": "container",
+          "id": "v_card_c",
+          "direction": "VERTICAL",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "badge",
+              "id": "b_fin_tier",
+              "text": "HEIMUI BLACK TIER",
+              "background_color": "#A855F7",
+              "text_color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "bal_amt",
+              "text": "$42,580.90 USD",
+              "style": "headlineMedium",
+              "color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "card_num",
+              "text": "•••• •••• •••• 8842",
+              "style": "titleSmall",
+              "color": "#94A3B8"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "id": "t_act_ops",
+        "text": "Quick Operations",
+        "style": "titleMedium",
+        "color": "#A855F7"
+      },
+      {
+        "type": "container",
+        "id": "ops_row",
+        "direction": "HORIZONTAL",
+        "spacing": 10,
+        "children": [
+          {
+            "type": "button",
+            "id": "btn_send",
+            "title": "💸 Send",
+            "variant": "FILLED",
+            "is_full_width": true
+          },
+          {
+            "type": "button",
+            "id": "btn_recv",
+            "title": "📥 Receive",
+            "variant": "TONAL",
+            "is_full_width": true
+          }
+        ]
+      }
+    ]
+  }
+}

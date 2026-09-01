@@ -1,0 +1,58 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "storybook_tokens",
+  "version": "1.0.0",
+  "title": "Brand Tokens",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "sb_tokens_col",
+    "spacing": 14,
+    "padding": 16,
+    "items": [
+      {
+        "type": "text",
+        "id": "t_tok_hdr",
+        "text": "HeimBrandTokens Color System",
+        "style": "titleMedium",
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "card",
+        "id": "c_tok_1",
+        "background_color": "#161D2F",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "container",
+          "id": "t_tok_b",
+          "direction": "VERTICAL",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "badge",
+              "id": "b_c1",
+              "text": "PRIMARY: #00E5FF (Electric Cyan)",
+              "background_color": "#00E5FF",
+              "text_color": "#0B0F19"
+            },
+            {
+              "type": "badge",
+              "id": "b_c2",
+              "text": "SECONDARY: #A855F7 (Neon Violet)",
+              "background_color": "#A855F7",
+              "text_color": "#FFFFFF"
+            },
+            {
+              "type": "badge",
+              "id": "b_c3",
+              "text": "CANVAS: #0B0F19 (Obsidian Dark)",
+              "background_color": "#1E293B",
+              "text_color": "#94A3B8"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

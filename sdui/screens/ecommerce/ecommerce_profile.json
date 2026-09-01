@@ -1,0 +1,58 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "ecommerce_profile",
+  "version": "1.0.0",
+  "title": "My Orders",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "profile_col",
+    "spacing": 14,
+    "padding": 16,
+    "items": [
+      {
+        "type": "text",
+        "id": "prof_hdr",
+        "text": "Order History & Rewards",
+        "style": "titleMedium",
+        "color": "#FFFFFF"
+      },
+      {
+        "type": "card",
+        "id": "order_c_1",
+        "background_color": "#161D2F",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "container",
+          "id": "o_box",
+          "direction": "VERTICAL",
+          "spacing": 6,
+          "children": [
+            {
+              "type": "badge",
+              "id": "b_deliv",
+              "text": "DELIVERED · ORDER #9821",
+              "background_color": "#10B981",
+              "text_color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "t_item",
+              "text": "Heimdall Mechanical Keyboard RGB",
+              "style": "bodyMedium",
+              "color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "t_tot",
+              "text": "Total: $149.00 USD",
+              "style": "bodySmall",
+              "color": "#94A3B8"
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

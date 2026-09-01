@@ -1,0 +1,342 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "hub_screen",
+  "version": "1.0.0",
+  "title": "HeimUI Showcase Hub",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "hub_list",
+    "spacing": 16,
+    "padding": 16,
+    "items": [
+      {
+        "type": "card",
+        "id": "hub_hero_card",
+        "background_color": "#161D2F",
+        "border_color": "#00E5FF",
+        "corner_radius": 16,
+        "padding": 20,
+        "child": {
+          "type": "container",
+          "id": "hero_inner",
+          "direction": "VERTICAL",
+          "spacing": 8,
+          "children": [
+            {
+              "type": "badge",
+              "id": "hero_badge",
+              "text": "⚡ 100% REMOTE SDUI ENGINE",
+              "background_color": "#00E5FF",
+              "text_color": "#0B0F19"
+            },
+            {
+              "type": "text",
+              "id": "hero_headline",
+              "text": "Explore HeimUI Verticals",
+              "style": "headlineSmall",
+              "color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "hero_sub",
+              "text": "Every screen below is fetched in real time over HTTP from GitHub Raw. Select an industry vertical to test dynamic rendering and 3-tab navigation.",
+              "style": "bodyMedium",
+              "color": "#94A3B8"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "id": "vert_section_title",
+        "text": "Industry Verticals",
+        "style": "titleMedium",
+        "color": "#00E5FF"
+      },
+      {
+        "type": "card",
+        "id": "card_ecommerce",
+        "background_color": "#1E293B",
+        "corner_radius": 14,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "ecommerce",
+            "params": {
+              "title": "Store & Deals"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "ecom_row",
+          "direction": "HORIZONTAL",
+          "spacing": 14,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_ecom",
+              "name": "shopping_cart",
+              "tint": "#00E5FF",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "ecom_txt",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t_ecom_title",
+                  "text": "1. E-Commerce & Deals",
+                  "style": "titleMedium",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_ecom_sub",
+                  "text": "Flash sales, category pills, product bottom sheet.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "card",
+        "id": "card_fintech",
+        "background_color": "#1E293B",
+        "corner_radius": 14,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "fintech",
+            "params": {
+              "title": "Fintech & Banking"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "fin_row",
+          "direction": "HORIZONTAL",
+          "spacing": 14,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_fin",
+              "name": "account_balance",
+              "tint": "#A855F7",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "fin_txt",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t_fin_title",
+                  "text": "2. Fintech & Banking",
+                  "style": "titleMedium",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_fin_sub",
+                  "text": "Dynamic KYC onboarding form with visible_if rules.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "card",
+        "id": "card_food",
+        "background_color": "#1E293B",
+        "corner_radius": 14,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "food",
+            "params": {
+              "title": "Food Delivery"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "food_row",
+          "direction": "HORIZONTAL",
+          "spacing": 14,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_food",
+              "name": "restaurant",
+              "tint": "#10B981",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "food_txt",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t_food_title",
+                  "text": "3. Food Delivery",
+                  "style": "titleMedium",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_food_sub",
+                  "text": "Restaurant feeds & live order status tracking card.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "card",
+        "id": "card_paywall",
+        "background_color": "#1E293B",
+        "corner_radius": 14,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "paywall",
+            "params": {
+              "title": "SaaS & Paywall"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "pw_row",
+          "direction": "HORIZONTAL",
+          "spacing": 14,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_pw",
+              "name": "diamond",
+              "tint": "#F59E0B",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "pw_txt",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t_pw_title",
+                  "text": "4. SaaS & Paywall",
+                  "style": "titleMedium",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_pw_sub",
+                  "text": "Pricing tiers A/B testing & reactive billing toggle.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "card",
+        "id": "card_storybook",
+        "background_color": "#1E293B",
+        "corner_radius": 14,
+        "padding": 16,
+        "actions": [
+          {
+            "type": "navigate",
+            "screen_id": "storybook",
+            "params": {
+              "title": "Primitives & Storybook"
+            }
+          }
+        ],
+        "child": {
+          "type": "container",
+          "id": "sb_row",
+          "direction": "HORIZONTAL",
+          "spacing": 14,
+          "alignment": "CENTER",
+          "children": [
+            {
+              "type": "icon",
+              "id": "ic_sb",
+              "name": "code",
+              "tint": "#EC4899",
+              "size": 36
+            },
+            {
+              "type": "container",
+              "id": "sb_txt",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "t_sb_title",
+                  "text": "5. Primitives Storybook",
+                  "style": "titleMedium",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_sb_sub",
+                  "text": "Catalog of SDUI primitives & custom stock chart plugin.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "type": "button",
+        "id": "btn_deeplink",
+        "title": "🔗 Open Fintech via deep link",
+        "variant": "OUTLINED",
+        "is_full_width": true,
+        "actions": [
+          {
+            "type": "open_url",
+            "url": "heimui://showcase/fintech"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,133 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "paywall_plans",
+  "version": "1.0.0",
+  "title": "Upgrade to Pro",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "pw_plans_col",
+    "spacing": 16,
+    "padding": 20,
+    "items": [
+      {
+        "type": "container",
+        "id": "pw_intro",
+        "direction": "VERTICAL",
+        "spacing": 6,
+        "alignment": "CENTER",
+        "children": [
+          {
+            "type": "badge",
+            "id": "b_pro_tag",
+            "text": "💎 PRO DEVELOPER ACCESS",
+            "background_color": "#F59E0B",
+            "text_color": "#0B0F19"
+          },
+          {
+            "type": "text",
+            "id": "t_pw_main",
+            "text": "Unlock Real-Time SDUI Power",
+            "style": "headlineSmall",
+            "color": "#FFFFFF"
+          },
+          {
+            "type": "text",
+            "id": "t_pw_sub",
+            "text": "Stream layouts instantly without client binary updates.",
+            "style": "bodySmall",
+            "color": "#94A3B8"
+          }
+        ]
+      },
+      {
+        "type": "switch",
+        "id": "sw_annual_bill",
+        "state_key": "is_annual",
+        "label": "Annual Billing (Save 35% + 2 Months Free)",
+        "initial_checked": true
+      },
+      {
+        "type": "card",
+        "id": "c_price_box",
+        "background_color": "#161D2F",
+        "border_color": "#F59E0B",
+        "corner_radius": 16,
+        "padding": 20,
+        "child": {
+          "type": "container",
+          "id": "p_box_in",
+          "direction": "VERTICAL",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "text",
+              "id": "p_tier_n",
+              "text": "Pro Developer License",
+              "style": "titleMedium",
+              "color": "#F59E0B"
+            },
+            {
+              "type": "text",
+              "id": "p_v_ann",
+              "text": "$19.00 / month (Billed Yearly)",
+              "style": "titleLarge",
+              "color": "#FFFFFF",
+              "visible_if": "is_annual == 'true'"
+            },
+            {
+              "type": "text",
+              "id": "p_v_mon",
+              "text": "$29.00 / month",
+              "style": "titleLarge",
+              "color": "#FFFFFF",
+              "visible_if": "is_annual != 'true'"
+            },
+            {
+              "type": "divider",
+              "id": "d_pw",
+              "thickness": 1,
+              "color": "#334155"
+            },
+            {
+              "type": "text",
+              "id": "f_1",
+              "text": "✔ Unlimited Dynamic SDUI Screens",
+              "style": "bodyMedium",
+              "color": "#E2E8F0"
+            },
+            {
+              "type": "text",
+              "id": "f_2",
+              "text": "✔ HMAC-SHA256 Payload Encryption",
+              "style": "bodyMedium",
+              "color": "#E2E8F0"
+            },
+            {
+              "type": "text",
+              "id": "f_3",
+              "text": "✔ Fail-Closed Architecture",
+              "style": "bodyMedium",
+              "color": "#E2E8F0"
+            }
+          ]
+        }
+      },
+      {
+        "type": "button",
+        "id": "btn_sub_pro",
+        "title": "Start 14-Day Free Trial",
+        "variant": "FILLED",
+        "is_full_width": true,
+        "actions": [
+          {
+            "type": "show_dialog",
+            "title": "Welcome to HeimUI Pro! 🚀",
+            "message": "Your 14-day free trial was activated over SDUI.",
+            "confirm_text": "Awesome!"
+          }
+        ]
+      }
+    ]
+  }
+}

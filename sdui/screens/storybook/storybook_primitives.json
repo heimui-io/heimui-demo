@@ -1,0 +1,101 @@
+{
+  "$schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "storybook_primitives",
+  "version": "1.0.0",
+  "title": "UI Primitives",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "sb_prim_col",
+    "spacing": 16,
+    "padding": 16,
+    "items": [
+      {
+        "type": "card",
+        "id": "c_sb_head",
+        "background_color": "#161D2F",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "container",
+          "id": "sb_in",
+          "direction": "VERTICAL",
+          "spacing": 6,
+          "children": [
+            {
+              "type": "badge",
+              "id": "b_sb_tag",
+              "text": "STORYBOOK COMPONENT CATALOG",
+              "background_color": "#EC4899",
+              "text_color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "t_sb_1",
+              "text": "HeimUI Native Primitives",
+              "style": "titleMedium",
+              "color": "#FFFFFF"
+            },
+            {
+              "type": "text",
+              "id": "t_sb_2",
+              "text": "All rendered natively in Compose Multiplatform from JSON.",
+              "style": "bodySmall",
+              "color": "#94A3B8"
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "id": "t_btn_hdr",
+        "text": "Button Variants",
+        "style": "titleSmall",
+        "color": "#EC4899"
+      },
+      {
+        "type": "container",
+        "id": "btn_c",
+        "direction": "VERTICAL",
+        "spacing": 8,
+        "children": [
+          {
+            "type": "button",
+            "id": "b_fil",
+            "title": "Filled Variant Button",
+            "variant": "FILLED",
+            "is_full_width": true
+          },
+          {
+            "type": "button",
+            "id": "b_out",
+            "title": "Outlined Variant Button",
+            "variant": "OUTLINED",
+            "is_full_width": true
+          },
+          {
+            "type": "button",
+            "id": "b_ton",
+            "title": "Tonal Variant Button",
+            "variant": "TONAL",
+            "is_full_width": true
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "t_in_hdr",
+        "text": "Text Input & State",
+        "style": "titleSmall",
+        "color": "#EC4899"
+      },
+      {
+        "type": "text_field",
+        "id": "tf_sb_sample",
+        "state_key": "sb_sample_input",
+        "label": "Dynamic Form Field",
+        "placeholder": "Type here to see state react..."
+      }
+    ]
+  }
+}

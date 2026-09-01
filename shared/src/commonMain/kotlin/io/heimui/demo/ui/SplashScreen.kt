@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -27,8 +28,11 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.sp
 import heimui_demo.shared.generated.resources.Res
+import heimui_demo.shared.generated.resources.app_tagline
+import heimui_demo.shared.generated.resources.app_name
 import heimui_demo.shared.generated.resources.heimui_avatar
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.resources.painterResource
@@ -56,7 +60,7 @@ fun SplashScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFF0B0F19)),
+            .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -73,31 +77,31 @@ fun SplashScreen(
                 modifier = Modifier
                     .size(160.dp)
                     .clip(RoundedCornerShape(36.dp))
-                    .border(2.dp, Color(0xFF00E5FF), RoundedCornerShape(36.dp))
+                    .border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(36.dp))
             )
 
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "HeimUI",
+                text = stringResource(Res.string.app_name),
                 fontSize = 38.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.White
+                color = MaterialTheme.colorScheme.onSurface
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Box(
                 modifier = Modifier
-                    .background(Color(0xFF161D2F), RoundedCornerShape(16.dp))
-                    .border(1.dp, Color(0xFF4F46E5), RoundedCornerShape(16.dp))
+                    .background(MaterialTheme.colorScheme.surface, RoundedCornerShape(16.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.secondary, RoundedCornerShape(16.dp))
                     .padding(horizontal = 14.dp, vertical = 6.dp)
             ) {
                 Text(
-                    text = "SERVER-DRIVEN UI ENGINE",
+                    text = stringResource(Res.string.app_tagline),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
-                    color = Color(0xFF00E5FF),
+                    color = MaterialTheme.colorScheme.primary,
                     letterSpacing = 1.sp
                 )
             }

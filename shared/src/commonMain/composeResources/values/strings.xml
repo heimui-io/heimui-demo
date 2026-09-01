@@ -1,0 +1,19 @@
+<resources>
+    <!-- Brand -->
+    <string name="app_name">HeimUI</string>
+    <string name="app_tagline">SERVER-DRIVEN UI ENGINE</string>
+    <string name="hub_badge">SHOWCASE HUB</string>
+
+    <!-- Navigation -->
+    <string name="cd_back">Go back</string>
+    <string name="cd_app_logo">HeimUI logo</string>
+
+    <!-- Source inspector: the </> tool that shows the payload behind a screen -->
+    <string name="source_title">Screen payload</string>
+    <string name="cd_view_source">View the JSON behind this screen</string>
+    <string name="source_loading">Loading…</string>
+    <string name="source_error">Could not load the payload: %1$s</string>
+
+    <!-- Screens -->
+    <string name="detail_default_title">Detail</string>
+</resources>
