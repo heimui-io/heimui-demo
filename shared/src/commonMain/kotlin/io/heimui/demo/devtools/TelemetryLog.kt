@@ -58,7 +58,6 @@ internal fun TelemetryLog(
                     color = accent,
                     fontSize = 11.sp,
                     fontFamily = FontFamily.Monospace,
-                    // Fixed width so the details line up into a column and scan like a log.
                     modifier = Modifier
                         .width(72.dp)
                         .background(
