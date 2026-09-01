@@ -71,7 +71,10 @@
             "icon": "send",
             "variant": "FILLED",
             "is_full_width": true,
-            "weight": 1
+            "weight": 1,
+            "frame": {
+              "min_height": 56
+            }
           },
           {
             "type": "button",
@@ -80,7 +83,10 @@
             "icon": "download",
             "variant": "TONAL",
             "is_full_width": true,
-            "weight": 1
+            "weight": 1,
+            "frame": {
+              "min_height": 56
+            }
           }
         ]
       }
