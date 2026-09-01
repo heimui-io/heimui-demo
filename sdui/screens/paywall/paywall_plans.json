@@ -8,7 +8,11 @@
     "type": "lazy_column",
     "id": "pw_plans_col",
     "spacing": 16,
-    "padding": 20,
+    "padding": {
+      "horizontal": 20,
+      "top": 8,
+      "bottom": 96
+    },
     "items": [
       {
         "type": "container",

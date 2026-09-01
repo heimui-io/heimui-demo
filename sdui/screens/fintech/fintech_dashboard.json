@@ -8,7 +8,11 @@
     "type": "lazy_column",
     "id": "fin_dash_col",
     "spacing": 16,
-    "padding": 16,
+    "padding": {
+      "horizontal": 16,
+      "top": 8,
+      "bottom": 96
+    },
     "items": [
       {
         "type": "card",
@@ -66,7 +70,8 @@
             "title": "Send",
             "icon": "send",
             "variant": "FILLED",
-            "is_full_width": true
+            "is_full_width": true,
+            "weight": 1
           },
           {
             "type": "button",
@@ -74,7 +79,8 @@
             "title": "Receive",
             "icon": "download",
             "variant": "TONAL",
-            "is_full_width": true
+            "is_full_width": true,
+            "weight": 1
           }
         ]
       }

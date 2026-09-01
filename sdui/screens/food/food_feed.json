@@ -8,7 +8,11 @@
     "type": "lazy_column",
     "id": "food_feed_col",
     "spacing": 16,
-    "padding": 16,
+    "padding": {
+      "horizontal": 16,
+      "top": 8,
+      "bottom": 96
+    },
     "items": [
       {
         "type": "card",

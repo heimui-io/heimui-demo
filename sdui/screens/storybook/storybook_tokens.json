@@ -8,7 +8,11 @@
     "type": "lazy_column",
     "id": "sb_tokens_col",
     "spacing": 14,
-    "padding": 16,
+    "padding": {
+      "horizontal": 16,
+      "top": 8,
+      "bottom": 96
+    },
     "items": [
       {
         "type": "text",
