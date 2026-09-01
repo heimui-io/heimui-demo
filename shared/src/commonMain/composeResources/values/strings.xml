@@ -13,6 +13,10 @@
     <string name="cd_view_source">View the JSON behind this screen</string>
     <string name="source_loading">Loading…</string>
     <string name="source_error">Could not load the payload: %1$s</string>
+    <string name="source_heading">Remote SDUI payload · %1$s</string>
+    <string name="source_placeholder">Fetching the payload from GitHub Raw…</string>
+    <string name="telemetry_title">SDK events</string>
+    <string name="telemetry_empty">No events yet. Renders, actions, submissions and payload repairs appear here.</string>
 
     <!-- Screens -->
     <string name="detail_default_title">Detail</string>

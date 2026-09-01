@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.heimui.core.domain.evaluator.HeimValidatorRegistry
 import io.heimui.core.presentation.designsystem.HeimBrandTokens
+import io.heimui.core.presentation.designsystem.HeimIconProvider
 import io.heimui.core.presentation.designsystem.HeimTheme
 import io.heimui.core.presentation.registry.HeimCustomComponentRegistry
 import io.heimui.core.presentation.telemetry.HeimTelemetryObserver
@@ -26,6 +27,7 @@ import io.heimui.demo.designsystem.tokens.DemoTypography
  * | [HeimBrandTokens]              | Use *your* names — `brand_primary`, `price`       |
  * | [HeimCustomComponentRegistry]  | Place your native composables by name             |
  * | [HeimValidatorRegistry]        | Reference your validators in a `CUSTOM` rule      |
+ * | [HeimIconProvider]             | Name an icon and get *your* icon set              |
  *
  * The pattern that matters: a payload should never contain a hex colour. It names a role, and
  * this file decides what the role looks like. That is what makes a rebrand a client release
@@ -34,6 +36,7 @@ import io.heimui.demo.designsystem.tokens.DemoTypography
 @Composable
 fun DemoTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
+    iconProvider: HeimIconProvider = MaterialHeimIconProvider,
     telemetryObserver: HeimTelemetryObserver = NoOpHeimTelemetryObserver,
     content: @Composable () -> Unit,
 ) {
@@ -65,6 +68,7 @@ fun DemoTheme(
     HeimTheme(
         darkTheme = darkTheme,
         colorScheme = if (darkTheme) DemoColors.darkScheme else DemoColors.lightScheme,
+        iconProvider = iconProvider,
         typography = DemoTypography.scale,
         brandTokens = brandTokens,
         customComponentRegistry = componentRegistry,

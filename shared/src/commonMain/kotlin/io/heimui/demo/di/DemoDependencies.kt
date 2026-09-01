@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import io.heimui.core.HeimUI
 import io.heimui.core.data.datasource.local.DriverBackedHeimCacheDataSource
+import io.heimui.core.data.datasource.remote.HeimAuthContext
+import io.heimui.core.data.datasource.remote.HeimAuthTokenProvider
 import io.heimui.core.di.HeimConfig
 import io.heimui.demo.data.session.SettingsStorageDriver
 import io.heimui.demo.devtools.SduiSourceInspector
@@ -40,9 +42,23 @@ class DemoDependencies(
                 HeimConfig(
                     baseUrl = StaticDemoCatalogRepository.sduiBaseUrl,
 
-                    // Called on every request, so rotating the token needs no re-init. HeimUI
-                    // never stores or refreshes it — that stays the app's job.
-                    authTokenProvider = session::authHeader,
+                    // Screens and submissions are authenticated differently, which is the normal
+                    // shape once payloads live on a CDN and writes go to your own API.
+                    //
+                    // Sending the token to raw.githubusercontent.com would break every screen:
+                    // that host answers 404 — not 401 — to an Authorization header it cannot
+                    // validate, so it never reveals whether a private repo exists. Beyond
+                    // breaking the demo, handing a credential to a third-party CDN is simply
+                    // wrong. Submissions go to our own endpoint and carry it.
+                    //
+                    // Called per request, so a rotated token needs no re-init. HeimUI never
+                    // stores or refreshes it — token lifecycle stays the app's job.
+                    authTokenProvider = HeimAuthTokenProvider { context ->
+                        when (context) {
+                            is HeimAuthContext.ScreenFetch -> null
+                            is HeimAuthContext.FormSubmit -> session.authHeader()
+                        }
+                    },
 
                     // A submission carries the auth header, so the SDK refuses any host that is
                     // not the configured origin unless it is listed here. This is what stops a

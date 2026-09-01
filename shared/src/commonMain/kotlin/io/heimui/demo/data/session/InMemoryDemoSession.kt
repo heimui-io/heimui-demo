@@ -28,7 +28,14 @@ class InMemoryDemoSession(
     }
 
     private companion object {
-        /** Obviously fake: the showcase backend is a static file server and ignores it. */
+        /**
+         * Stand-in for a real credential.
+         *
+         * Safe to seed because the app authenticates **submissions only** — see
+         * `DemoDependencies`. Sending it to raw.githubusercontent.com would break every screen:
+         * that host answers 404, not 401, to an Authorization header it cannot validate, so it
+         * never reveals whether a private repo exists.
+         */
         const val DEMO_TOKEN = "demo-session-token-not-a-real-credential"
     }
 }

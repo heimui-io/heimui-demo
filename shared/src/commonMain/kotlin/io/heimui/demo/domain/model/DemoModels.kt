@@ -1,8 +1,14 @@
 package io.heimui.demo.domain.model
 
 /**
- * A tab inside a vertical. [screenId] is the path the SDK resolves against the SDUI base URL,
- * so it is the only thing that ties this catalog to the remote payloads.
+ * A tab inside a vertical.
+ *
+ * [screenId] is the path the SDK resolves against the SDUI base URL, so it is the only thing tying
+ * this catalog to the remote payloads.
+ *
+ * [icon] is a *name*, not a glyph — the same vocabulary the server uses. The data layer says what
+ * the icon means and the design system decides what it draws, so swapping icon sets never touches
+ * this file. See `MaterialHeimIconProvider`.
  */
 data class DemoTab(
     val title: String,

@@ -49,6 +49,7 @@ fun DemoNavHost(dependencies: DemoDependencies) {
             verticalId = current.verticalId,
             catalog = dependencies.catalog,
             sourceInspector = dependencies.sourceInspector,
+            telemetry = dependencies.telemetry,
             onBack = navigationViewModel::onBack,
             onAction = navigationViewModel::onHeimAction,
         )

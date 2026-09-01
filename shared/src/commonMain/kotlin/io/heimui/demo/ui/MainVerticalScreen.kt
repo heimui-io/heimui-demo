@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Code
+import androidx.compose.material.icons.automirrored.filled.HelpOutline
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.FloatingActionButton
@@ -53,11 +54,19 @@ import io.heimui.core.domain.model.action.HeimAction
 import io.heimui.core.presentation.HeimScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import io.heimui.demo.devtools.DemoTelemetryObserver
 import io.heimui.demo.devtools.SduiSourceInspector
+import io.heimui.demo.devtools.TelemetryLog
 import io.heimui.demo.domain.repository.DemoCatalogRepository
 import io.heimui.demo.presentation.VerticalViewModel
+import heimui_demo.shared.generated.resources.cd_app_logo
 import heimui_demo.shared.generated.resources.cd_back
 import heimui_demo.shared.generated.resources.cd_view_source
+import heimui_demo.shared.generated.resources.source_heading
+import heimui_demo.shared.generated.resources.source_loading
+import heimui_demo.shared.generated.resources.source_placeholder
+import heimui_demo.shared.generated.resources.telemetry_title
+import io.heimui.demo.designsystem.MaterialHeimIconProvider
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.resources.painterResource
 
@@ -67,6 +76,7 @@ fun MainVerticalScreen(
     verticalId: String,
     catalog: DemoCatalogRepository,
     sourceInspector: SduiSourceInspector,
+    telemetry: DemoTelemetryObserver,
     onBack: () -> Unit,
     onAction: (HeimAction) -> Unit
 ) {
@@ -76,13 +86,15 @@ fun MainVerticalScreen(
         VerticalViewModel(verticalId, catalog, sourceInspector)
     }
     val state by viewModel.uiState.collectAsStateWithLifecycle()
+    val telemetryEntries by telemetry.events.collectAsStateWithLifecycle()
 
     // This composable owns no state of its own: it renders `state` and forwards intents.
     val headerTitle = state.title
     val tabs = state.tabs
     val selectedTabIndex = state.selectedTabIndex
     val isJsonSheetOpen = state.isSourceSheetOpen
-    val rawJsonContent = state.rawJson ?: if (state.isLoadingRawJson) "Loading…" else ""
+    val sourceLoadingLabel = stringResource(Res.string.source_loading)
+    val rawJsonContent = state.rawJson ?: if (state.isLoadingRawJson) sourceLoadingLabel else ""
     val currentScreenId = state.currentScreenId
 
     Scaffold(
@@ -92,7 +104,7 @@ fun MainVerticalScreen(
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Image(
                             painter = painterResource(Res.drawable.heimui_avatar),
-                            contentDescription = "HeimUI Logo",
+                            contentDescription = stringResource(Res.string.cd_app_logo),
                             modifier = Modifier
                                 .size(24.dp)
                                 .clip(CircleShape)
@@ -131,7 +143,14 @@ fun MainVerticalScreen(
                         selected = selectedTabIndex == index,
                         onClick = { viewModel.onTabSelected(index) },
                         icon = {
-                            Text(text = tabSpec.icon, fontSize = 20.sp)
+                            // The tab names an icon exactly like the payload does, and the same
+                            // provider resolves it — native chrome and server-driven content can
+                            // never drift into two different icon sets.
+                            Icon(
+                                imageVector = MaterialHeimIconProvider.vectorFor(tabSpec.icon)
+                                    ?: Icons.AutoMirrored.Filled.HelpOutline,
+                                contentDescription = null, // The label beside it already names the tab.
+                            )
                         },
                         label = {
                             Text(
@@ -178,7 +197,7 @@ fun MainVerticalScreen(
             }
         }
 
-        // Live JSON Inspector Modal
+        // The source inspector: the payload that produced everything above.
         if (isJsonSheetOpen) {
             ModalBottomSheet(
                 onDismissRequest = { viewModel.onToggleSourceSheet(false) },
@@ -190,13 +209,29 @@ fun MainVerticalScreen(
                         .padding(20.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "⚡ Remote SDUI JSON ($currentScreenId)",
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    // Events first: they are the diagnostic, and the payload below them can run
+                    // to hundreds of lines. Putting the JSON first buried the one thing you open
+                    // this sheet to check.
+                    Text(
+                        text = stringResource(Res.string.telemetry_title),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    TelemetryLog(
+                        entries = telemetryEntries,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text(
+                        text = stringResource(
+                            Res.string.source_heading,
+                            currentScreenId.orEmpty(),
+                        ),
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
                     Box(
                         modifier = Modifier
@@ -206,7 +241,9 @@ fun MainVerticalScreen(
                             .padding(14.dp)
                     ) {
                         Text(
-                            text = if (rawJsonContent.isNotBlank()) rawJsonContent else "Loading remote payload from GitHub Raw...",
+                            text = rawJsonContent.ifBlank {
+                                stringResource(Res.string.source_placeholder)
+                            },
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 12.sp,
                             fontFamily = FontFamily.Monospace

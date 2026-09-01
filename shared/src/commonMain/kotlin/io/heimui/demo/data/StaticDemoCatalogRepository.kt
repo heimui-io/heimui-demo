@@ -34,8 +34,15 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
          * exercises the real revalidation path (304 → serve cache) instead of refetching on
          * every open.
          *
-         * To iterate locally: serve the `sdui/` folder with `python3 -m http.server 8080` and
-         * override this with `http://10.0.2.2:8080` from the Android emulator.
+         * To iterate locally, serve the repo root and point this at the host machine:
+         *
+         * ```
+         * python3 -m http.server 8080
+         * sduiBaseUrl = "http://10.0.2.2:8080/sdui"   // 10.0.2.2 is the emulator's host loopback
+         * ```
+         *
+         * Plain HTTP only reaches the app because `src/debug` carries a network security config
+         * that exempts loopback addresses. Release builds still refuse cleartext.
          */
         var sduiBaseUrl: String =
             "https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui"
@@ -45,47 +52,47 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
         private val VERTICALS = listOf(
             DemoVertical(
                 id = "ecommerce",
-                title = "🛒 E-Commerce & Deals",
+                title = "E-Commerce & Deals",
                 tabs = listOf(
-                    DemoTab("Deals", "ecommerce/ecommerce_home.json", "🔥"),
-                    DemoTab("Catalog", "ecommerce/ecommerce_catalog.json", "📦"),
-                    DemoTab("Orders", "ecommerce/ecommerce_profile.json", "📜"),
+                    DemoTab("Deals", "ecommerce/ecommerce_home.json", "local_fire_department"),
+                    DemoTab("Catalog", "ecommerce/ecommerce_catalog.json", "category"),
+                    DemoTab("Orders", "ecommerce/ecommerce_profile.json", "list_alt"),
                 )
             ),
             DemoVertical(
                 id = "fintech",
-                title = "💳 Fintech & Banking",
+                title = "Fintech & Banking",
                 tabs = listOf(
-                    DemoTab("Balance", "fintech/fintech_dashboard.json", "💳"),
-                    DemoTab("KYC Form", "fintech/fintech_kyc.json", "📝"),
-                    DemoTab("Limits", "fintech/fintech_limits.json", "🛡️"),
+                    DemoTab("Balance", "fintech/fintech_dashboard.json", "account_balance_wallet"),
+                    DemoTab("KYC Form", "fintech/fintech_kyc.json", "list_alt"),
+                    DemoTab("Limits", "fintech/fintech_limits.json", "security"),
                 )
             ),
             DemoVertical(
                 id = "food",
-                title = "🍔 Food Delivery",
+                title = "Food Delivery",
                 tabs = listOf(
-                    DemoTab("Kitchens", "food/food_feed.json", "🍕"),
-                    DemoTab("Live Order", "food/food_tracking.json", "🛵"),
-                    DemoTab("Locations", "food/food_account.json", "📍"),
+                    DemoTab("Kitchens", "food/food_feed.json", "local_pizza"),
+                    DemoTab("Live Order", "food/food_tracking.json", "two_wheeler"),
+                    DemoTab("Locations", "food/food_account.json", "location_on"),
                 )
             ),
             DemoVertical(
                 id = "paywall",
-                title = "💎 SaaS & Paywall",
+                title = "SaaS & Paywall",
                 tabs = listOf(
-                    DemoTab("Plans", "paywall/paywall_plans.json", "💎"),
-                    DemoTab("Team", "paywall/paywall_seats.json", "👥"),
-                    DemoTab("Usage", "paywall/paywall_usage.json", "📊"),
+                    DemoTab("Plans", "paywall/paywall_plans.json", "diamond"),
+                    DemoTab("Team", "paywall/paywall_seats.json", "groups"),
+                    DemoTab("Usage", "paywall/paywall_usage.json", "trending_up"),
                 )
             ),
             DemoVertical(
                 id = "storybook",
-                title = "⚡ Primitives Storybook",
+                title = "Primitives Storybook",
                 tabs = listOf(
-                    DemoTab("Primitives", "storybook/storybook_primitives.json", "🧩"),
-                    DemoTab("Plugins", "storybook/storybook_custom.json", "🔌"),
-                    DemoTab("Tokens", "storybook/storybook_tokens.json", "🎨"),
+                    DemoTab("Primitives", "storybook/storybook_primitives.json", "extension"),
+                    DemoTab("Plugins", "storybook/storybook_custom.json", "widgets"),
+                    DemoTab("Tokens", "storybook/storybook_tokens.json", "palette"),
                 )
             ),
         )

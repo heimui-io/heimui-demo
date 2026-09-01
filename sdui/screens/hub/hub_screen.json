@@ -327,7 +327,8 @@
       {
         "type": "button",
         "id": "btn_deeplink",
-        "title": "🔗 Open Fintech via deep link",
+        "title": "Open Fintech via deep link",
+        "icon": "link",
         "variant": "OUTLINED",
         "is_full_width": true,
         "actions": [

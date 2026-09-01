@@ -63,14 +63,16 @@
           {
             "type": "button",
             "id": "btn_send",
-            "title": "💸 Send",
+            "title": "Send",
+            "icon": "send",
             "variant": "FILLED",
             "is_full_width": true
           },
           {
             "type": "button",
             "id": "btn_recv",
-            "title": "📥 Receive",
+            "title": "Receive",
+            "icon": "download",
             "variant": "TONAL",
             "is_full_width": true
           }
