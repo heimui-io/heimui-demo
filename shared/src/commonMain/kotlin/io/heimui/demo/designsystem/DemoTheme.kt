@@ -17,6 +17,7 @@ import io.heimui.demo.domain.session.DemoSession
 import io.heimui.demo.integration.DemoImageLoader
 import io.heimui.demo.integration.DemoModalPresenter
 import io.heimui.demo.integration.DemoUrlLauncher
+import io.heimui.demo.devtools.DemoTelemetryObserver
 import io.heimui.demo.integration.RequireSessionInterceptor
 import io.heimui.core.presentation.designsystem.HeimTheme
 import io.heimui.core.presentation.registry.HeimCustomComponentRegistry
@@ -162,6 +163,18 @@ fun DemoTheme(
         customComponentRegistry = componentRegistry,
         validatorRegistry = validatorRegistry,
         telemetryObserver = telemetryObserver,
+        // Business analytics the payload declared. A real app forwards these to Amplitude,
+        // Segment or Crashlytics; the showcase surfaces them in the `</>` panel so the seam is
+        // visible rather than implied.
+        //
+        // Note what the SDK did not do: it never looked inside the map. The names come from
+        // whoever wrote the payload, which is the point — renaming an event is a backend deploy,
+        // not an app release.
+        trackingDispatcher = { _, payload ->
+            (telemetryObserver as? DemoTelemetryObserver)?.recordTracking(
+                payload.mapValues { it.value.asString.orEmpty() }
+            )
+        },
         content = content,
     )
 }

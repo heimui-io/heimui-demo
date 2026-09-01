@@ -62,7 +62,28 @@ class DemoTelemetryObserver : HeimTelemetryObserver {
             is HeimTelemetryEvent.TimeToRender ->
                 Entry("render", "${event.screenId} · ${event.durationMs}ms", false)
         }
-        // Newest first, bounded: this is a debug panel, not a log store.
+        record(entry)
+    }
+
+    /**
+     * Records a business analytics event the payload declared.
+     *
+     * Deliberately a separate entry point from [onEvent]: SDK telemetry and product tracking are
+     * different things with different owners, and collapsing them would hide which is which. In a
+     * real app this method is where Amplitude or Segment would be called instead.
+     */
+    fun recordTracking(payload: Map<String, String>) {
+        record(
+            Entry(
+                label = "track",
+                detail = payload.entries.joinToString(" · ") { "${it.key}=${it.value}" },
+                isWarning = false,
+            )
+        )
+    }
+
+    // Newest first, bounded: this is a debug panel, not a log store.
+    private fun record(entry: Entry) {
         _events.update { (listOf(entry) + it).take(MAX_ENTRIES) }
     }
 

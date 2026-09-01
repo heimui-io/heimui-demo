@@ -102,6 +102,15 @@
         "is_full_width": true,
         "actions": [
           {
+            "type": "set_state",
+            "key": "submitted_at",
+            "value": "now",
+            "tracking": {
+              "event": "kyc_submit_tapped",
+              "vertical": "fintech"
+            }
+          },
+          {
             "type": "submit_form",
             "endpoint": "https://httpbin.org/post",
             "method": "POST",
@@ -110,6 +119,13 @@
               "tax_id": "{{state.tax_id}}",
               "is_business": "{{state.is_business}}",
               "channel": "mobile-demo"
+            }
+          },
+          {
+            "type": "navigate",
+            "screen_id": "fintech",
+            "tracking": {
+              "event": "kyc_success_viewed"
             }
           }
         ]

@@ -1,0 +1,49 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Tests
+        run: ./gradlew :shared:allTests --stacktrace
+
+      # Minified, deliberately. HeimUI drives every screen through kotlinx.serialization with a
+      # polymorphic discriminator, which is exactly the shape R8 breaks silently: the debug build
+      # passes and the release fails to parse a payload. A debug-only build would not catch it.
+      - name: Release build with R8
+        run: ./gradlew :androidApp:assembleRelease --no-configuration-cache --stacktrace
+
+      # Payloads are part of the contract. A malformed one only surfaces at runtime otherwise.
+      - name: Payloads are valid JSON
+        run: |
+          python3 - <<'PY'
+          import glob, json, sys
+          bad = []
+          for f in sorted(glob.glob("sdui/**/*.json", recursive=True)):
+              try:
+                  json.load(open(f))
+              except Exception as e:
+                  bad.append(f"{f}: {e}")
+          if bad:
+              print("\n".join(bad)); sys.exit(1)
+          print(f"{len(glob.glob('sdui/**/*.json', recursive=True))} payloads OK")
+          PY
