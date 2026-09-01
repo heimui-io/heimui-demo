@@ -1,0 +1,33 @@
+{
+  "${'$'}schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "food_account",
+  "version": "1.0.0",
+  "title": "Delivery Addresses",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "f_acc_col",
+    "spacing": 14,
+    "padding": 16,
+    "items": [
+      { "type": "text", "id": "t_addr_hdr", "text": "Saved Delivery Locations", "style": "TITLE_MEDIUM", "color": "#FFFFFF" },
+      {
+        "type": "card",
+        "id": "addr_1",
+        "background_color": "#1E293B",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "container",
+          "id": "a_box",
+          "direction": "VERTICAL",
+          "spacing": 4,
+          "children": [
+            { "type": "text", "id": "a_label", "text": "🏠 Home Office", "style": "TITLE_SMALL", "color": "#00E5FF" },
+            { "type": "text", "id": "a_val", "text": "Calle 93B # 13-45, Bogotá", "style": "BODY_MEDIUM", "color": "#FFFFFF" }
+          ]
+        }
+      }
+    ]
+  }
+}

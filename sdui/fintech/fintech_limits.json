@@ -1,0 +1,33 @@
+{
+  "${'$'}schema": "https://heimui.io/schema/v1/screen.json",
+  "id": "fintech_limits",
+  "version": "1.0.0",
+  "title": "Limits & Security",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "lazy_column",
+    "id": "lim_col",
+    "spacing": 14,
+    "padding": 16,
+    "items": [
+      { "type": "text", "id": "t_lim_hdr", "text": "Transfer Limits & Security", "style": "TITLE_MEDIUM", "color": "#FFFFFF" },
+      {
+        "type": "card",
+        "id": "c_lim_1",
+        "background_color": "#1E293B",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "container",
+          "id": "c_box_1",
+          "direction": "VERTICAL",
+          "spacing": 6,
+          "children": [
+            { "type": "text", "id": "t_d_lim", "text": "Daily Wire Transfer Limit", "style": "BODY_MEDIUM", "color": "#94A3B8" },
+            { "type": "text", "id": "t_d_val", "text": "$50,000.00 USD / Day", "style": "TITLE_MEDIUM", "color": "#00E5FF" }
+          ]
+        }
+      }
+    ]
+  }
+}

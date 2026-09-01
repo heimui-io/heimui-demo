@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.HeimUI" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">#0B0F19</item>
+        <item name="android:statusBarColor">#0B0F19</item>
+        <item name="android:navigationBarColor">#0B0F19</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowDisablePreview">true</item>
+        <!-- Android 12+ (API 31+) Disable system icon to jump straight into Compose -->
+        <item name="android:windowSplashScreenBackground">#0B0F19</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@android:color/transparent</item>
+    </style>
+</resources>
