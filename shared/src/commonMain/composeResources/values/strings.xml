@@ -18,6 +18,10 @@
     <string name="telemetry_title">SDK events</string>
     <string name="telemetry_empty">No events yet. Renders, actions, submissions and payload repairs appear here.</string>
 
+    <!-- Session: the toggle exists so the signed-out path is reachable in the showcase -->
+    <string name="cd_sign_out">Sign out — submissions will be refused</string>
+    <string name="cd_sign_in">Sign in — submissions will be allowed</string>
+
     <!-- Screens -->
     <string name="detail_default_title">Detail</string>
 </resources>

@@ -1,5 +1,7 @@
 package io.heimui.demo.domain.session
 
+import kotlinx.coroutines.flow.StateFlow
+
 /**
  * The user's session.
  *
@@ -15,6 +17,14 @@ interface DemoSession {
      * reinitialising the SDK.
      */
     fun authHeader(): String?
+
+    /**
+     * Whether a token is currently held.
+     *
+     * Observable rather than a plain getter because the UI reflects it: signing out has to change
+     * what the user sees, and reading a getter during recomposition would only update by accident.
+     */
+    val isSignedIn: StateFlow<Boolean>
 
     fun signIn(token: String)
     fun signOut()

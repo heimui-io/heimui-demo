@@ -37,10 +37,15 @@ fun DemoNavHost(
         is DemoDestination.Splash ->
             SplashScreen(onFinish = navigationViewModel::onSplashFinished)
 
-        is DemoDestination.Hub -> HubScreen(
-            hubScreenId = dependencies.catalog.hubScreenId(),
-            onAction = navigationViewModel::onHeimAction,
-        )
+        is DemoDestination.Hub -> {
+            val isSignedIn by dependencies.session.isSignedIn.collectAsStateWithLifecycle()
+            HubScreen(
+                hubScreenId = dependencies.catalog.hubScreenId(),
+                isSignedIn = isSignedIn,
+                onToggleSession = dependencies::toggleSession,
+                onAction = navigationViewModel::onHeimAction,
+            )
+        }
 
         is DemoDestination.Detail -> DetailScreen(
             screenId = current.screenId,

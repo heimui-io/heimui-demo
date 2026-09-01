@@ -1,5 +1,14 @@
 package io.heimui.demo.data.session
 
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
+
 import io.heimui.demo.domain.session.DemoSession
 import kotlin.concurrent.Volatile
 
@@ -14,17 +23,32 @@ class InMemoryDemoSession(
     initialToken: String? = DEMO_TOKEN,
 ) : DemoSession {
 
-    @Volatile
-    private var token: String? = initialToken
+    private val _token = MutableStateFlow(initialToken)
 
-    override fun authHeader(): String? = token?.let { "Bearer $it" }
+    override val isSignedIn: StateFlow<Boolean> = _token
+        .map { !it.isNullOrBlank() }
+        .stateIn(
+            // `GlobalScope` because the session outlives every screen and every ViewModel: it is
+            // process-scoped state, and tying it to a screen's scope would end the flow the first
+            // time the user navigated away. A real app scopes this to its application graph.
+            scope = CoroutineScope(SupervisorJob() + Dispatchers.Default),
+            started = SharingStarted.Eagerly,
+            initialValue = !initialToken.isNullOrBlank(),
+        )
+
+    override fun authHeader(): String? = _token.value?.let { "Bearer $it" }
 
     override fun signIn(token: String) {
-        this.token = token
+        _token.value = token
     }
 
     override fun signOut() {
-        token = null
+        _token.value = null
+    }
+
+    /** Flips between the two states, so the showcase can demonstrate the signed-out path. */
+    fun toggle() {
+        if (isSignedIn.value) signOut() else signIn(DEMO_TOKEN)
     }
 
     private companion object {

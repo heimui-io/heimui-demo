@@ -14,6 +14,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -28,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.sp
 import heimui_demo.shared.generated.resources.Res
+import heimui_demo.shared.generated.resources.cd_sign_in
+import heimui_demo.shared.generated.resources.cd_sign_out
 import heimui_demo.shared.generated.resources.hub_badge
 import heimui_demo.shared.generated.resources.app_name
 import heimui_demo.shared.generated.resources.heimui_avatar
@@ -39,6 +46,8 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun HubScreen(
     hubScreenId: String,
+    isSignedIn: Boolean,
+    onToggleSession: () -> Unit,
     onAction: (HeimAction) -> Unit
 ) {
     Scaffold(
@@ -72,6 +81,29 @@ fun HubScreen(
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         }
+                    }
+                },
+                actions = {
+                    // Not decoration. The action pipeline refuses a submission while signed out,
+                    // and without a way to get there that interceptor is invisible code. Toggle
+                    // this off, submit the KYC form, and the `</>` panel shows the block — the
+                    // request is never built, so nothing reaches the network to be reported.
+                    IconButton(onClick = onToggleSession) {
+                        Icon(
+                            imageVector = if (isSignedIn) {
+                                Icons.Default.LockOpen
+                            } else {
+                                Icons.Default.Lock
+                            },
+                            contentDescription = stringResource(
+                                if (isSignedIn) Res.string.cd_sign_out else Res.string.cd_sign_in
+                            ),
+                            tint = if (isSignedIn) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.error
+                            },
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(

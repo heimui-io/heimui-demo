@@ -10,6 +10,8 @@ import io.heimui.core.presentation.state.HeimStateManager
 import io.heimui.demo.domain.session.DemoSession
 import io.heimui.demo.integration.DemoUrlLauncher
 import io.heimui.demo.integration.RequireSessionInterceptor
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -25,10 +27,13 @@ import kotlin.test.assertTrue
  */
 class IntegrationSeamsTest {
 
-    private class FakeSession(private var token: String?) : DemoSession {
-        override fun authHeader(): String? = token
-        override fun signIn(token: String) { this.token = token }
-        override fun signOut() { token = null }
+    private class FakeSession(token: String?) : DemoSession {
+        private val state = MutableStateFlow(token)
+        override val isSignedIn: StateFlow<Boolean> =
+            MutableStateFlow(!token.isNullOrBlank())
+        override fun authHeader(): String? = state.value
+        override fun signIn(token: String) { state.value = token }
+        override fun signOut() { state.value = null }
     }
 
     private fun submitAction() = SubmitFormAction(

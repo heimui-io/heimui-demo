@@ -29,6 +29,16 @@ class DemoDependencies(
     val telemetry: DemoTelemetryObserver = DemoTelemetryObserver(),
 ) {
     /**
+     * Flips the session between signed in and signed out.
+     *
+     * Exists so the showcase can reach the signed-out path: `RequireSessionInterceptor` refuses a
+     * submission without a token, and an interceptor nobody can trigger is untestable by hand.
+     */
+    fun toggleSession() {
+        (session as? InMemoryDemoSession)?.toggle()
+    }
+
+    /**
      * Initialises the SDK once per process.
      *
      * Screens resolve to `{baseUrl}/screens/{screenId}`, which is exactly how the static files
