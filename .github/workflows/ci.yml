@@ -59,3 +59,31 @@ jobs:
               print("\n".join("  " + b for b in bad)); sys.exit(1)
           print("padding placement OK")
           PY
+
+  # Compiles the app against the SDK as published on Maven Central. Until 0.0.1-alpha-1 was
+  # released this job could not exist: the build resolved `io.heimui:heimui-core` from mavenLocal,
+  # which a runner does not have, so CI checked the payloads and nothing else. A runner's empty
+  # local repository is what makes this meaningful -- it can only pass if the release is genuinely
+  # consumable by someone who is not on this machine.
+  build:
+    name: Build against Maven Central
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: ${{ github.ref != 'refs/heads/main' }}
+
+      - name: Assemble debug
+        run: ./gradlew :androidApp:assembleDebug --stacktrace
+
+      # Names the version that was actually resolved. When a release goes wrong the useful question
+      # is "which one did it build against", and a green check alone does not answer it.
+      - name: Report resolved SDK version
+        run: ./gradlew :shared:dependencyInsight --dependency heimui-core --configuration androidCompileClasspath
