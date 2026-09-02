@@ -202,7 +202,26 @@ fun HomeRoute(navController: NavController) {
       <p>The consequence is the property you bought SDUI for: a screen you change on the server appears on the
       next open. Always. No cache-busting, no version bump. An offline-first cache that skipped the network
       would quietly destroy that.</p>
-      <h3>What you can change</h3>`),
+      <h3>What identifies a cached screen</h3>
+      <p>The <strong>URL it was fetched from</strong> — origin, path and query parameters — not the
+      screen id.</p>`),
+      note('note', `The distinction is not academic. <code>product_detail?sku=x1</code> and
+      <code>?sku=x2</code> share a screen id and are different resources, so keying by the id put both
+      in one entry: opening the second product showed the first for an instant, and asked the server
+      about it using the first one's ETag. The same collapse happens across origins, where two
+      backends each serve a <code>products</code>.`),
+      html(`<p>Parameters are sorted into the key, so two callers passing the same filters in a
+      different order share one entry instead of caching the same screen twice.</p>
+
+      <h3>The cache is bounded</h3>
+      <p><code>DriverBackedHeimCacheDataSource</code> keeps <strong>60 screens</strong> and drops the
+      oldest first. Adjust with <code>maxEntries</code>.</p>`),
+      note('tip', `The bound matters because entries are per-URL: a catalogue browsed through a hundred
+      products leaves a hundred entries, in storage the user never agreed to spend. A TTL alone does not
+      limit that — it removes what nobody came back for, and says nothing about how much accumulates in
+      the meantime.`),
+
+      html(`<h3>What you can change</h3>`),
       table(['Goal', 'How'], [
         ['Default', 'Nothing. In-memory, dies with the process.'],
         ['Survive restarts', '<code>DriverBackedHeimCacheDataSource(driver = …)</code>'],
@@ -238,11 +257,11 @@ fun HomeRoute(navController: NavController) {
       <code>a11y</code>, <code>weight</code> and <code>frame</code> in addition to what is listed here.</p>
       <h3>Layout</h3>`),
       table(['Type', 'Notes'], [
-        ['<code>container</code>', 'Linear layout. <code>direction</code> (<code>VERTICAL</code>/<code>HORIZONTAL</code>), <code>alignment</code>, <code>arrangement</code>, <code>spacing</code>, <code>padding</code>, <code>background_color</code>, <code>scrollable</code>.'],
-        ['<code>box</code>', 'Overlay. <code>content_alignment</code>, <code>padding</code>, <code>background_color</code>.'],
+        ['<code>container</code>', 'Linear layout. <code>direction</code> (<code>VERTICAL</code>/<code>HORIZONTAL</code>), <code>alignment</code>, <code>arrangement</code>, <code>spacing</code>, <code>padding</code>, <code>background_color</code>, <code>corner_radius</code>, <code>border_color</code>, <code>border_width</code>, <code>scrollable</code> — see the note below on its default.'],
+        ['<code>box</code>', 'Overlay. <code>content_alignment</code>, <code>padding</code>, <code>background_color</code>, <code>corner_radius</code>, <code>border_color</code>, <code>border_width</code>.'],
         ['<code>card</code>', 'Elevated surface with one child. <code>elevation</code>, <code>corner_radius</code>, <code>border_color</code>, and it can carry <code>actions</code>.'],
         ['<code>lazy_column</code> · <code>lazy_row</code>', 'Virtualised lists. <code>spacing</code>, <code>padding</code>, <code>alignment</code>, <code>arrangement</code>, <code>pagination</code>.'],
-        ['<code>spacer</code> · <code>divider</code>', 'Fixed gap (or flexible with <code>is_flexible</code>), and a rule.']
+        ['<code>spacer</code> · <code>divider</code>', 'Fixed gap (<code>size</code>, or flexible with <code>is_flexible</code>), and a rule (<code>thickness</code>, <code>color</code>).']
       ]),
       note('note', `There is no <code>column</code>, <code>row</code> or <code>grid</code>. A vertical stack is
       <code>container</code> with <code>direction: "VERTICAL"</code>; a horizontal one is the same component
@@ -250,24 +269,24 @@ fun HomeRoute(navController: NavController) {
 
       html(`<h3>Content</h3>`),
       table(['Type', 'Notes'], [
-        ['<code>text</code>', '<code>text</code>, <code>style</code>, <code>color</code>, <code>align</code>, <code>max_lines</code>.'],
+        ['<code>text</code>', '<code>text</code>, <code>style</code>, <code>color</code>, <code>text_align</code>, <code>max_lines</code>.'],
         ['<code>rich_text</code>', 'One paragraph of styled runs, with links. See <a href="#richtext">Rich text</a>.'],
         ['<code>image</code>', 'Loaded through Coil 3. <code>url</code>, <code>blur_hash</code>, <code>aspect_ratio</code>, <code>corner_radius</code>, <code>content_scale</code>.'],
         ['<code>icon</code>', 'A <em>name</em>, drawn by your <code>HeimIconProvider</code>.'],
-        ['<code>badge</code>', 'Decoration. Not tappable — for a tappable pill use <code>chip</code>.'],
-        ['<code>button</code>', '<code>variant</code> (<code>FILLED</code>, <code>OUTLINED</code>, <code>TEXT</code>, <code>TONAL</code>), optional <code>icon</code>, <code>is_loading</code>, <code>actions</code>.'],
+        ['<code>badge</code>', 'Decoration, not tappable — for a tappable pill use <code>chip</code>. <code>background_color</code>, <code>text_color</code>, <code>icon_url</code>.'],
+        ['<code>button</code>', '<code>variant</code> (<code>FILLED</code>, <code>OUTLINED</code>, <code>TEXT</code>, <code>TONAL</code>), optional <code>icon</code>, <code>is_loading</code>, <code>is_enabled</code>, <code>actions</code>.'],
         ['<code>chip</code>', 'Compact and tappable. Action, single choice, or toggle — see <a href="#chips">Chips</a>.'],
         ['<code>custom</code>', 'Your own composable, addressed by name. See <a href="#custom">Custom components</a>.']
       ]),
 
       html(`<h3>Forms</h3>`),
       table(['Type', 'Notes'], [
-        ['<code>text_field</code>', '<code>input_type</code> (<code>TEXT</code>, <code>NUMBER</code>, <code>EMAIL</code>, <code>PASSWORD</code>, <code>PHONE</code>), <code>validation_rules</code>, <code>helper_text</code>.'],
+        ['<code>text_field</code>', '<code>input_type</code> (<code>TEXT</code>, <code>NUMBER</code>, <code>EMAIL</code>, <code>PASSWORD</code>, <code>PHONE</code>), <code>initial_value</code>, <code>validation_rules</code>, <code>helper_text</code>.'],
         ['<code>switch</code>', 'A setting. <code>initial_checked</code>, <code>on_check_actions</code>.'],
         ['<code>checkbox</code>', 'An agreement — "I accept". The whole row is the tap target, not the 20dp box.'],
-        ['<code>radio_group</code>', 'One of a few, all visible. Past about five options, use a select.'],
-        ['<code>select</code>', 'One of many, revealed on demand. Stores the option <code>value</code>, shows its <code>label</code>.'],
-        ['<code>date_picker</code>', 'State holds ISO <code>YYYY-MM-DD</code>. <code>min_date</code>, <code>max_date</code>.']
+        ['<code>radio_group</code>', 'One of a few, all visible. Past about five options, use a select. <code>initial_value</code>, <code>on_select_actions</code>.'],
+        ['<code>select</code>', 'One of many, revealed on demand. Stores the option <code>value</code>, shows its <code>label</code>. <code>initial_value</code>, <code>on_select_actions</code>.'],
+        ['<code>date_picker</code>', 'State holds ISO <code>YYYY-MM-DD</code>. <code>min_date</code>, <code>max_date</code>, and <code>confirm_text</code> / <code>dismiss_text</code> — see <a href="#forms">Forms</a>.']
       ]),
       note('note', `<code>dropdown</code> is spelled <code>select</code>. Every form component writes into the
       same state namespace, so <code>visible_if</code> can read any of them.`)
@@ -320,6 +339,19 @@ fun HomeRoute(navController: NavController) {
       <code>END</code>, <code>SPACE_BETWEEN</code>, <code>SPACE_AROUND</code> and
       <code>SPACE_EVENLY</code>.</p>`),
 
+      html(`<h3>Scrolling</h3>
+      <p><code>scrollable</code> defaults differently per axis, and the reason is worth knowing.</p>`),
+      note('warning', `A <strong>vertical</strong> container scrolls unless told not to — content taller
+      than the screen is the common case, and clipping it strands the user. A <strong>horizontal</strong>
+      one does <em>not</em> scroll unless you ask.
+      <br><br>That asymmetry is not arbitrary: a scrolling axis is measured as unbounded, and unbounded
+      width stops text from ever wrapping. A row holding a title and a description beside an icon —
+      the most common card layout there is — would be clipped mid-word. Overflowing horizontally is
+      the rarer intent and is better asked for explicitly.`),
+      note('tip', `For a chip strip or a carousel, reach for <code>lazy_row</code> rather than a
+      scrollable <code>container</code>. Its padding becomes content padding, so the items keep their
+      inset at both ends while still scrolling to the screen edge.`),
+
       html(`<h3>Insets</h3>
       <p><code>apply_safe_insets</code> is screen-level and on by default: the SDK pads the payload by the
       status bar, navigation bar and cutout.</p>`),
@@ -350,6 +382,7 @@ fun HomeRoute(navController: NavController) {
   "type": "rich_text",
   "id": "legal",
   "style": "bodySmall",
+  "align": "START",
   "spans": [
     { "text": "I accept the " },
     { "text": "terms and conditions", "weight": "bold", "url": "https://yourcompany.com/terms" },
@@ -390,6 +423,27 @@ fun HomeRoute(navController: NavController) {
       padding becomes content padding, so the chips scroll edge to edge while keeping their 16dp inset at both
       ends. A padded container puts that inset <em>inside</em> the scroll, and it disappears the moment the
       user drags.`),
+
+      html(`<h4>Reaching the screen edge</h4>
+      <p>There is a subtlety here that is easy to miss. If the strip sits inside a
+      <code>lazy_column</code> that has horizontal padding, the parent insets <em>every</em> item —
+      including the strip. The chips end up double-inset, and worse, the strip cannot scroll to the
+      screen edge because its viewport starts 16dp in.</p>
+      <p>For a full-bleed carousel, move the horizontal inset off the parent and onto the items that
+      need it:</p>`),
+      code(J, `{ "type": "lazy_column", "id": "home",
+  "padding": { "top": 8, "bottom": 96 },
+  "items": [
+    { "type": "box", "id": "hero_inset", "padding": { "horizontal": 16 },
+      "children": [ { "type": "card", "id": "hero", "child": { } } ] },
+
+    { "type": "lazy_row", "id": "chips", "padding": { "horizontal": 16 },
+      "items": [ ] }
+  ]}`),
+      html(`<p>Components that carry no padding of their own — <code>text</code>, <code>button</code>,
+      <code>image</code>, <code>badge</code> — go inside a <code>box</code> or <code>container</code>
+      that does. Verbose, but it is the only arrangement where one child reaches the edge and its
+      siblings stay aligned.</p>`),
       note('note', `<code>variant</code> is not cosmetic. <code>FILTER</code> announces itself as selected or
       not to a screen reader; <code>ASSIST</code> announces an action. Using one for the other is the
       difference between hearing "selected" and hearing nothing.`)
@@ -446,6 +500,18 @@ fun HomeRoute(navController: NavController) {
       The stored value travels to your backend, and <code>15/03/2024</code> is 15 March in Bogotá and
       unparseable where the month comes first. Bounds are compared in UTC, because a calendar date has no time
       zone and treating it as an instant moves a birth date by a day west of Greenwich.</p>`),
+      html(`<h3>The picker's two labels come from the payload</h3>`),
+      code(J, `{ "type": "date_picker", "id": "dob", "state_key": "birth_date",
+  "label": "Fecha de nacimiento",
+  "confirm_text": "Aceptar",
+  "dismiss_text": "Cancelar" }`),
+      note('note', `Material localises the rest of the dialog from the device locale — the headline,
+      the month names, the weekday initials. These two buttons cannot follow, because the SDK ships no
+      translations for languages it has never heard of. Left alone they read "OK" and "Cancel" inside an
+      otherwise translated sheet.
+      <br><br>The server already knows the reader's language from <code>Accept-Language</code>, so it is
+      the right place to answer this.`),
+
       html(`<h3>Drafts survive process death</h3>`),
       code(K, `HeimTheme(
     formDraftStorage = DriverBackedFormDraftStorage(driver = YourStorageDriver()),
@@ -462,16 +528,17 @@ fun HomeRoute(navController: NavController) {
     id: 'actions', title: 'The action model',
     blocks: [
       html(`<p>Ten action types. Some the SDK performs itself; all of them are forwarded to your
-      <code>onAction</code> afterwards, so you can observe or extend any of them.</p>`),
-      table(['Action', 'Who handles it'], [
-        ['<code>navigate</code>', '<strong>You.</strong> The SDK never navigates — only your app knows its graph.'],
-        ['<code>submit_form</code>', 'SDK. Validates, interpolates state, posts, reports the result.'],
-        ['<code>set_state</code>', 'SDK. Writes a value into form state. Purely local.'],
-        ['<code>open_url</code>', 'SDK, through <code>HeimUrlLauncher</code> under the scheme policy.'],
-        ['<code>show_dialog</code> · <code>show_bottom_sheet</code>', 'SDK, through <code>HeimModalPresenter</code>. The sheet&rsquo;s content is a full SDUI component tree.'],
-        ['<code>show_snackbar</code>', 'SDK.'],
-        ['<code>dismiss_modal</code> · <code>dismiss</code>', 'SDK closes modals; <code>dismiss</code> is forwarded so you can pop your own stack.'],
-        ['<code>custom</code>', '<strong>You.</strong> An escape hatch with a name and a payload.']
+      <code>onAction</code> afterwards, so you can observe or extend any of them. Every action also
+      accepts <code>tracking</code> — see <a href="#tracking">Analytics</a>.</p>`),
+      table(['Action', 'Fields', 'Who handles it'], [
+        ['<code>navigate</code>', '<code>screen_id</code>, <code>params</code>', '<strong>You.</strong> The SDK never navigates — only your app knows its graph.'],
+        ['<code>submit_form</code>', '<code>endpoint</code>, <code>method</code>, <code>payload</code>', 'SDK. Validates, interpolates state, posts, reports the result.'],
+        ['<code>set_state</code>', '<code>key</code>, <code>value</code>', 'SDK. Writes a value into form state. Purely local.'],
+        ['<code>open_url</code>', '<code>url</code>', 'SDK, through <code>HeimUrlLauncher</code> under the scheme policy.'],
+        ['<code>show_dialog</code> · <code>show_bottom_sheet</code>', '<code>title</code>, <code>message</code>, <code>confirm_text</code>/<code>confirm_actions</code>, <code>dismiss_text</code>/<code>dismiss_actions</code> · <code>content</code>, <code>is_dismissible</code>', 'SDK, through <code>HeimModalPresenter</code>. The sheet&rsquo;s content is a full SDUI component tree.'],
+        ['<code>show_snackbar</code>', '<code>message</code>, <code>duration</code>', 'SDK.'],
+        ['<code>dismiss_modal</code> · <code>dismiss</code>', '—', 'SDK closes modals; <code>dismiss</code> is forwarded so you can pop your own stack.'],
+        ['<code>custom</code>', '<code>name</code>, <code>payload</code>', '<strong>You.</strong> An escape hatch with a name and a payload.']
       ]),
       code(K, `HeimScreen(
     screenId = "catalog",
@@ -547,11 +614,19 @@ fun HomeRoute(navController: NavController) {
       html(`<p>Pass your Material 3 objects straight in. The payload names roles —
       <code>primary</code>, <code>titleMedium</code>, <code>surfaceVariant</code> — and your theme decides what
       they look like.</p>`),
-      code(K, `HeimTheme(
-    colorScheme = YourAppColorScheme,
-    typography  = YourAppTypography,
-    shapes      = YourAppShapes,
-) { HeimScreen(screenId = "home", onAction = ::onHeimAction) }`),
+      code(K, `// HeimTheme inherits the theme it is wrapped in. Server-driven screens look like the
+// rest of your app with nothing to restate at the call site.
+YourAppTheme {
+    HeimTheme {
+        HeimScreen(screenId = "home", onAction = ::onHeimAction)
+    }
+}
+
+// Pass them explicitly only when the SDUI surface should differ from the rest of the app.
+HeimTheme(
+    colorScheme = MarketingColorScheme,
+    typography  = MarketingTypography,
+) { … }`),
       note('tip', `<strong>A payload should never contain a hex colour.</strong> It names a role and this file
       decides what the role means — which is what makes a rebrand a client release rather than a migration
       across every JSON on your server.`),
@@ -636,30 +711,158 @@ HeimTheme(
   {
     id: 'custom', title: 'Custom components',
     blocks: [
-      html(`<p>The escape hatch for anything genuinely proprietary — a chart, a map, a card scanner, an AR
-      view. The server addresses a composable the SDK has never heard of.</p>`),
-      code(K, `val registry = remember {
+      html(`<p>The escape hatch for anything the primitives cannot express — a chart, a map, a card
+      scanner, an AR view, or a product card whose design is yours and is not going to be described in
+      JSON. The server addresses a composable the SDK has never heard of.</p>
+
+      <h3>Two halves that meet at render time</h3>
+      <p>This is the part worth getting straight, because the registry lives at the app root and a tap
+      usually has to navigate — and navigation is per-route. Those are not in conflict: the registry
+      declares <em>how a name is drawn</em>, and the action handler arrives <em>as a parameter</em> when
+      the component is actually rendered.</p>`),
+
+      html(`<svg viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg" class="my-4 w-full" role="img" aria-label="How a custom component is resolved">
+  <defs>
+    <marker id="ar" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#334155"/>
+    </marker>
+  </defs>
+  <rect x="8" y="8" width="330" height="150" rx="10" fill="#161D2F" stroke="#A855F7" stroke-width="1.5"/>
+  <text x="24" y="34" fill="#A855F7" font-family="JetBrains Mono, monospace" font-size="11">ONCE, AT THE APP ROOT</text>
+  <text x="24" y="60" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="14" font-weight="600">HeimTheme(registry)</text>
+  <text x="24" y="84" fill="#94A3B8" font-family="Inter, sans-serif" font-size="12.5">Declares how a name is drawn.</text>
+  <text x="24" y="104" fill="#94A3B8" font-family="Inter, sans-serif" font-size="12.5">Knows nothing about navigation,</text>
+  <text x="24" y="124" fill="#94A3B8" font-family="Inter, sans-serif" font-size="12.5">screens, or where it is used.</text>
+  <text x="24" y="146" fill="#00E5FF" font-family="JetBrains Mono, monospace" font-size="11.5">"product_card" &#8594; @Composable</text>
+  <rect x="382" y="8" width="330" height="150" rx="10" fill="#161D2F" stroke="#00E5FF" stroke-width="1.5"/>
+  <text x="398" y="34" fill="#00E5FF" font-family="JetBrains Mono, monospace" font-size="11">PER SCREEN</text>
+  <text x="398" y="60" fill="#F8FAFC" font-family="Inter, sans-serif" font-size="14" font-weight="600">HeimScreen(id, onAction)</text>
+  <text x="398" y="84" fill="#94A3B8" font-family="Inter, sans-serif" font-size="12.5">Decides what a tap does, because</text>
+  <text x="398" y="104" fill="#94A3B8" font-family="Inter, sans-serif" font-size="12.5">only this route knows its graph.</text>
+  <text x="398" y="146" fill="#00E5FF" font-family="JetBrains Mono, monospace" font-size="11.5">NavigateAction &#8594; navController</text>
+  <rect x="196" y="196" width="330" height="88" rx="10" fill="#0d1220" stroke="#334155" stroke-width="1.5"/>
+  <text x="212" y="222" fill="#D97706" font-family="JetBrains Mono, monospace" font-size="11">FROM THE SERVER</text>
+  <text x="212" y="248" fill="#94A3B8" font-family="JetBrains Mono, monospace" font-size="11.5">{ "type": "custom",</text>
+  <text x="212" y="268" fill="#94A3B8" font-family="JetBrains Mono, monospace" font-size="11.5">&#160;&#160;"name": "product_card", "data": { … } }</text>
+  <path d="M173,158 L330,196" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <path d="M547,158 L392,196" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <path d="M361,284 L361,318" stroke="#334155" stroke-width="1.5" fill="none" marker-end="url(#ar)"/>
+  <rect x="112" y="322" width="498" height="66" rx="10" fill="#161D2F" stroke="#10B981" stroke-width="1.5"/>
+  <text x="128" y="348" fill="#10B981" font-family="JetBrains Mono, monospace" font-size="11">YOUR COMPOSABLE, CALLED WITH BOTH</text>
+  <text x="128" y="374" fill="#F8FAFC" font-family="JetBrains Mono, monospace" font-size="12">renderer(data, onAction<tspan fill="#94A3B8"> of this screen</tspan>, modifier)</text>
+</svg>`),
+
+      note('note', `The click does <strong>not</strong> live in the theme. Your renderer receives the
+      <code>onAction</code> of the screen being drawn, so one registration navigates differently
+      depending on where it appears. Capturing a <code>navController</code> inside the registry would
+      be the mistake — take the parameter instead.`),
+
+      html(`<h3>1 · Declare the shape</h3>
+      <p>Once, as a type. It doubles as the contract you hand to whoever writes the payload.</p>`),
+      code(K, `@Serializable
+data class ProductCard(
+    val sku: String,
+    val title: String,
+    val price: Double,
+    val currency: String = "USD",
+    @SerialName("image_url") val imageUrl: String? = null,
+    @SerialName("in_stock") val inStock: Boolean = true,
+)`),
+
+      html(`<h3>2 · Register it at the root</h3>`),
+      code(K, `// App.kt — once per process. No navigation in here.
+val registry = remember {
     HeimCustomComponentRegistry().apply {
-        register("stock_chart") { component, _, onAction, modifier ->
-            StockChart(
-                ticker = component.data["ticker"]?.asString.orEmpty(),
-                price  = component.data["price"]?.asDouble ?: 0.0,
-                onTap  = { onAction(CustomAction(name = "chart_tapped")) },
-                modifier = modifier,
+        register<ProductCard>("HORIZONTAL_CARD_PRODUCT") { product, onAction, modifier ->
+            HorizontalProductCard(
+                product  = product,
+                onClick  = {
+                    // Goes back through the same pipeline as any SDK action: your interceptors,
+                    // your tracking, the sequential ordering. Nothing special-cased.
+                    onAction(NavigateAction("product_detail", mapOf("sku" to product.sku)))
+                },
+                modifier = modifier,   // already carries weight and frame from the payload
             )
         }
     }
 }
 
-HeimTheme(customComponentRegistry = registry) { HeimScreen("dashboard", onAction = ::onHeimAction) }`),
-      code(J, `{ "type": "custom", "id": "chart", "name": "stock_chart",
-  "data": { "ticker": "AAPL", "price": 348.5 } }`),
-      html(`<p>It composes inside the server-driven tree like any built-in, receives the same state manager,
-      and can dispatch actions back through the same pipeline. It survives R8 — the SDK ships consumer keep
-      rules that cover it.</p>`),
-      note('note', `A <code>custom</code> component nobody registered renders <strong>nothing</strong> in
-      production and reports itself as telemetry. Set <code>showDiagnostics = true</code> on
-      <code>HeimTheme</code> in debug builds to see a visible placeholder instead.`)
+HeimTheme(customComponentRegistry = registry) { AppNavHost() }`),
+
+      html(`<h3>3 · Each route brings its own handler</h3>`),
+      code(K, `composable("catalog") {
+    HeimScreen("catalog", onAction = { if (it is NavigateAction) nav.navigate(it.screenId) })
+}
+
+composable("wishlist") {
+    // Same card, same registration — a different destination, because the route decides.
+    HeimScreen("wishlist", onAction = { if (it is NavigateAction) nav.navigate(it.screenId) })
+}`),
+
+      html(`<h3>4 · The server sends data, not design</h3>`),
+      code(J, `{ "type": "lazy_column", "id": "catalog",
+  "padding": { "horizontal": 16, "top": 8 }, "spacing": 12,
+  "items": [
+    { "type": "custom", "id": "p_001", "name": "HORIZONTAL_CARD_PRODUCT",
+      "data": {
+        "sku": "sku_001", "title": "Auriculares Pro", "price": 348.5,
+        "image_url": "https://cdn.example.com/p/001.jpg", "in_stock": true
+      }},
+    { "type": "custom", "id": "p_002", "name": "HORIZONTAL_CARD_PRODUCT",
+      "data": { "sku": "sku_002", "title": "Teclado 65%", "price": 129.0 } }
+  ]}`),
+
+      html(`<p>Reordering the list, adding products, changing prices — all payload. Changing how the
+      card <em>looks</em> is a client release, and that is correct: it is native code.</p>`),
+
+      note('tip', `<strong>Prefer the typed overload.</strong> The untyped one hands you a
+      <code>Map&lt;String, HeimValue&gt;</code> and leaves the unpacking to you —
+      <code>d["title"]?.asString.orEmpty()</code> at every field, with the payload's shape spelled out
+      in string literals the compiler cannot check. A typo in <code>"image_url"</code> is a silently
+      empty image. With a type, defaults live in the constructor and the names are checked for you.`),
+
+      note('note', `A payload that does not fit the type renders <strong>nothing</strong> and reports a
+      <code>PayloadViolation</code>, rather than throwing — the same rule everywhere else: a malformed
+      component costs its own space on screen, never the screen around it. The same happens for a
+      <code>custom</code> nobody registered. Set <code>showDiagnostics = true</code> in debug builds to
+      see a visible placeholder instead.`),
+
+      html(`<h3>Ten components do not mean ten blocks at the root</h3>
+      <p><code>register</code> returns the registry, so registrations compose. Group them by feature,
+      one extension function per file, and the composition root stays the same size however many
+      components exist.</p>`),
+      code(K, `// designsystem/custom/ProductComponents.kt
+fun HeimCustomComponentRegistry.productComponents() = apply {
+    register<ProductCard>("HORIZONTAL_CARD_PRODUCT") { p, onAction, m ->
+        HorizontalProductCard(p, { onAction(NavigateAction("product_detail", mapOf("sku" to p.sku))) }, m)
+    }
+    register<ProductGrid>("GRID_CARD_PRODUCT") { p, onAction, m -> GridProductCard(p, onAction, m) }
+}
+
+// App.kt — five lines, whether you have three components or thirty.
+val registry = remember {
+    HeimCustomComponentRegistry()
+        .productComponents()
+        .checkoutComponents()
+        .marketingComponents()
+}`),
+      note('tip', `When your composable already takes <code>(data, onAction, modifier)</code> in that
+      order, the registration is a reference:
+      <code>register&lt;ProductCard&gt;("HORIZONTAL_CARD_PRODUCT", ::HorizontalProductCard)</code>.
+      The lambda is only needed where you translate an action — and that translation is the useful
+      code, not ceremony.`),
+      note('note', `There is no annotation processor doing this for you, deliberately. A component
+      that appears without a visible registration is impossible to trace when it misbehaves, it
+      would make KSP a build dependency for every consumer, and two features registering the same
+      name would collide invisibly. Composition solves the verbosity without any of that.`),
+
+      html(`<h3>When not to reach for this</h3>
+      <p>If the card can be built from <code>card</code> + a horizontal <code>container</code> +
+      <code>image</code> + <code>text</code>, build it that way — then the server controls the design
+      too, which is the point of SDUI. Reserve <code>custom</code> for what the primitives genuinely
+      cannot express.</p>
+      <p>A useful test: <strong>if expressing it would mean adding ten properties to the schema, it is a
+      custom component.</strong></p>`)
     ]
   },
   {

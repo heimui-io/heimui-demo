@@ -8,60 +8,78 @@
     "id": "ecom_home_col",
     "spacing": 16,
     "padding": {
-      "horizontal": 16,
       "top": 8,
       "bottom": 96
     },
     "items": [
       {
-        "type": "card",
-        "id": "hero_promo",
-        "background_color": "#161D2F",
-        "border_color": "#00E5FF",
-        "corner_radius": 16,
-        "padding": 18,
-        "actions": [
+        "type": "box",
+        "id": "hero_promo_inset",
+        "padding": {
+          "horizontal": 16
+        },
+        "children": [
           {
-            "type": "show_snackbar",
-            "message": "🔥 Summer Sale Campaign Activated!"
-          }
-        ],
-        "child": {
-          "type": "container",
-          "id": "hero_content",
-          "direction": "VERTICAL",
-          "spacing": 8,
-          "children": [
-            {
-              "type": "badge",
-              "id": "b_deal",
-              "text": "⚡ FLASH SALE · 50% OFF",
-              "background_color": "#00E5FF",
-              "text_color": "#0B0F19"
-            },
-            {
-              "type": "text",
-              "id": "t_hero",
-              "text": "Cyberpunk Gear & Tech",
-              "style": "headlineSmall",
-              "color": "#FFFFFF"
-            },
-            {
-              "type": "text",
-              "id": "t_sub",
-              "text": "Streamed dynamically from HeimUI backend without app store releases.",
-              "style": "bodySmall",
-              "color": "#94A3B8"
+            "type": "card",
+            "id": "hero_promo",
+            "background_color": "#161D2F",
+            "border_color": "#00E5FF",
+            "corner_radius": 16,
+            "padding": 18,
+            "actions": [
+              {
+                "type": "show_snackbar",
+                "message": "🔥 Summer Sale Campaign Activated!"
+              }
+            ],
+            "child": {
+              "type": "container",
+              "id": "hero_content",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "badge",
+                  "id": "b_deal",
+                  "text": "⚡ FLASH SALE · 50% OFF",
+                  "background_color": "#00E5FF",
+                  "text_color": "#0B0F19"
+                },
+                {
+                  "type": "text",
+                  "id": "t_hero",
+                  "text": "Cyberpunk Gear & Tech",
+                  "style": "headlineSmall",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "t_sub",
+                  "text": "Streamed dynamically from HeimUI backend without app store releases.",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
             }
-          ]
-        }
+          }
+        ]
       },
       {
-        "type": "text",
-        "id": "cat_hdr",
-        "text": "Featured Categories",
-        "style": "titleMedium",
-        "color": "#00E5FF"
+        "type": "box",
+        "id": "cat_hdr_inset",
+        "padding": {
+          "horizontal": 16
+        },
+        "content_alignment": "START",
+        "children": [
+          {
+            "type": "text",
+            "id": "cat_hdr",
+            "text": "Featured Categories",
+            "style": "titleMedium",
+            "color": "#00E5FF"
+          }
+        ]
       },
       {
         "type": "lazy_row",
@@ -138,7 +156,10 @@
             "background_color": "brand_primary",
             "text_color": "surface_base"
           }
-        ]
+        ],
+        "padding": {
+          "horizontal": 16
+        }
       },
       {
         "type": "spacer",
@@ -146,43 +167,53 @@
         "size": 8
       },
       {
-        "type": "button",
-        "id": "btn_terms",
-        "title": "View terms",
-        "variant": "OUTLINED",
-        "is_full_width": true,
-        "actions": [
+        "type": "box",
+        "id": "btn_terms_inset",
+        "padding": {
+          "horizontal": 16
+        },
+        "content_alignment": "START",
+        "children": [
           {
-            "type": "show_bottom_sheet",
-            "title": "Promotion terms",
-            "is_dismissible": true,
-            "content": {
-              "type": "container",
-              "id": "terms_sheet",
-              "padding": 8,
-              "spacing": 16,
-              "scrollable": false,
-              "children": [
-                {
-                  "type": "text",
-                  "id": "terms_body",
-                  "style": "legal",
-                  "text": "Offer valid while stocks last. This text uses the 'legal' brand token, registered by the app — the server only names it."
-                },
-                {
-                  "type": "button",
-                  "id": "terms_close",
-                  "title": "Got it",
-                  "variant": "FILLED",
-                  "is_full_width": true,
-                  "actions": [
+            "type": "button",
+            "id": "btn_terms",
+            "title": "View terms",
+            "variant": "OUTLINED",
+            "is_full_width": true,
+            "actions": [
+              {
+                "type": "show_bottom_sheet",
+                "title": "Promotion terms",
+                "is_dismissible": true,
+                "content": {
+                  "type": "container",
+                  "id": "terms_sheet",
+                  "padding": 8,
+                  "spacing": 16,
+                  "scrollable": false,
+                  "children": [
                     {
-                      "type": "dismiss_modal"
+                      "type": "text",
+                      "id": "terms_body",
+                      "style": "legal",
+                      "text": "Offer valid while stocks last. This text uses the 'legal' brand token, registered by the app — the server only names it."
+                    },
+                    {
+                      "type": "button",
+                      "id": "terms_close",
+                      "title": "Got it",
+                      "variant": "FILLED",
+                      "is_full_width": true,
+                      "actions": [
+                        {
+                          "type": "dismiss_modal"
+                        }
+                      ]
                     }
                   ]
                 }
-              ]
-            }
+              }
+            ]
           }
         ]
       }
