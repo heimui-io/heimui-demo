@@ -1,5 +1,4 @@
 {
-  "$schema": "https://heimui.io/schema/v1/screen.json",
   "id": "fintech_kyc",
   "version": "1.0.0",
   "title": "KYC Verification",
@@ -134,7 +133,9 @@
             "type": "REQUIRED",
             "error_message": "Date of birth is required"
           }
-        ]
+        ],
+        "confirm_text": "Aceptar",
+        "dismiss_text": "Cancelar"
       },
       {
         "type": "radio_group",

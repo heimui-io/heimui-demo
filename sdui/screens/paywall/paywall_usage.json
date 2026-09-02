@@ -1,5 +1,4 @@
 {
-  "$schema": "https://heimui.io/schema/v1/screen.json",
   "id": "paywall_usage",
   "version": "1.0.0",
   "title": "Usage & SLA",

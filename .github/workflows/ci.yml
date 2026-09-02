@@ -11,39 +11,88 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  verify:
+  # The payloads are the contract between this app and whoever writes screens. A malformed one
+  # only surfaces at runtime otherwise — on a device, to a user.
+  payloads:
+    name: Payloads
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-java@v4
-        with:
-          distribution: temurin
-          java-version: '17'
-
-      - uses: gradle/actions/setup-gradle@v4
-
-      - name: Tests
-        run: ./gradlew :shared:allTests --stacktrace
-
-      # Minified, deliberately. HeimUI drives every screen through kotlinx.serialization with a
-      # polymorphic discriminator, which is exactly the shape R8 breaks silently: the debug build
-      # passes and the release fails to parse a payload. A debug-only build would not catch it.
-      - name: Release build with R8
-        run: ./gradlew :androidApp:assembleRelease --no-configuration-cache --stacktrace
-
-      # Payloads are part of the contract. A malformed one only surfaces at runtime otherwise.
-      - name: Payloads are valid JSON
+      - name: Valid JSON
         run: |
           python3 - <<'PY'
           import glob, json, sys
+          files = sorted(glob.glob("sdui/**/*.json", recursive=True))
           bad = []
-          for f in sorted(glob.glob("sdui/**/*.json", recursive=True)):
+          for f in files:
               try:
                   json.load(open(f))
               except Exception as e:
                   bad.append(f"{f}: {e}")
           if bad:
               print("\n".join(bad)); sys.exit(1)
-          print(f"{len(glob.glob('sdui/**/*.json', recursive=True))} payloads OK")
+          print(f"{len(files)} payloads OK")
           PY
+
+      # Only these carry padding. A `padding` on anything else is silently ignored at runtime,
+      # which looks like the SDK dropped it rather than like the payload asked for the impossible.
+      - name: Padding is on a component that supports it
+        run: |
+          python3 - <<'PY'
+          import glob, json, sys
+          ALLOWED = {"container", "card", "lazy_column", "lazy_row", "box"}
+          bad = []
+          def walk(node, path, out):
+              if isinstance(node, dict):
+                  if "padding" in node and node.get("type") not in ALLOWED:
+                      out.append(f"{path}: '{node.get('type')}' (id={node.get('id')})")
+                  for key in ("children", "items"):
+                      for i, child in enumerate(node.get(key) or []):
+                          walk(child, path, out)
+                  if "child" in node:
+                      walk(node["child"], path, out)
+          for f in sorted(glob.glob("sdui/**/*.json", recursive=True)):
+              walk(json.load(open(f)).get("root", {}), f, bad)
+          if bad:
+              print("padding on components that ignore it:")
+              print("\n".join("  " + b for b in bad)); sys.exit(1)
+          print("padding placement OK")
+          PY
+
+  docs:
+    name: Docs site
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: docs.js parses
+        run: node -e "new Function(require('fs').readFileSync('docs/docs.js','utf8'))"
+
+      # A nav entry or a cross-reference pointing at a section that does not exist is a dead link
+      # on the published site, and nothing else would catch it.
+      - name: No dead internal anchors
+        run: |
+          node - <<'JS'
+          const src = require('fs').readFileSync('docs/docs.js', 'utf8');
+          const ids = new Set([...src.matchAll(/^\s*id:\s*'([\w-]+)'/gm)].map(m => m[1]));
+          const refs = [...src.matchAll(/href="#([\w-]+)"/g)].map(m => m[1]);
+          const dead = [...new Set(refs.filter(r => !ids.has(r)))];
+          if (dead.length) { console.error('dead anchors: ' + dead.join(', ')); process.exit(1); }
+          console.log(`${ids.size} sections, ${refs.length} internal links, none dead`);
+          JS
+
+# The app itself is not built here, and that is deliberate rather than an omission.
+#
+# It depends on `io.heimui:heimui-core`, which is not published to a public repository yet — the
+# SDK lives in a private repo and is consumed from mavenLocal during development. A runner has
+# neither. Adding the Gradle steps back means one of:
+#
+#   * publishing the SDK to Maven Central or GitHub Packages, or
+#   * checking out the SDK repo here with a token and building it first.
+#
+# Until one of those is true, a build job would fail on every commit for a reason unrelated to the
+# commit, and a CI that is always red is the same as no CI at all.

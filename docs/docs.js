@@ -33,9 +33,9 @@ const SECTIONS = [
         ['<strong>Yours to extend</strong>', 'Nine providers, custom native components addressed by name, and a repository you can replace outright.']
       ]),
 
-      note('note', `This site documents the <strong>mobile SDK</strong> — how to add it to an app and drive it.
-      The payload contract itself lives in <code>schema/heimui-screen.schema.json</code>, which is annotated
-      field by field and is what you hand to whoever builds your backend.`)
+      note('note', `This site documents the <strong>mobile SDK</strong> — how to add it to an app and
+      drive it. The payload contract is a separate artefact, delivered with the platform rather than
+      published here.`)
     ]
   },
   {

@@ -1,5 +1,4 @@
 {
-  "$schema": "https://heimui.io/schema/v1/screen.json",
   "id": "storybook_custom",
   "version": "1.0.0",
   "title": "Custom Plugins",
