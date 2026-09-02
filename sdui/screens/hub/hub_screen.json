@@ -43,7 +43,7 @@
             {
               "type": "text",
               "id": "hero_sub",
-              "text": "Every screen below is fetched in real time over HTTP from GitHub Raw. Select an industry vertical to test dynamic rendering and 3-tab navigation.",
+              "text": "Every screen below is fetched in real time over HTTP from whatever host the SDK is pointed at. Select an industry vertical to test dynamic rendering and 3-tab navigation.",
               "style": "bodyMedium",
               "color": "#94A3B8"
             }
