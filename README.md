@@ -4,7 +4,7 @@
 
 # HeimUI Demo
 
-**The reference integration for [HeimUI Core](https://heimui-io.github.io/heimui-demo/) — Server-Driven UI for Kotlin Multiplatform.**
+**The reference integration for [HeimUI Core](https://heimui.io/sdk/) — Server-Driven UI for Kotlin Multiplatform.**
 
 [![Kotlin](https://img.shields.io/badge/Kotlin-2.4.10-7F52FF.svg?logo=kotlin&logoColor=white)](https://kotlinlang.org)
 [![Compose Multiplatform](https://img.shields.io/badge/Compose_Multiplatform-1.12.0-4285F4.svg?logo=jetpackcompose&logoColor=white)](https://www.jetbrains.com/compose-multiplatform/)
@@ -12,7 +12,7 @@
 [![iOS](https://img.shields.io/badge/iOS-000000.svg?logo=apple&logoColor=white)](https://apple.com)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 
-**[📖 Documentation](https://heimui-io.github.io/heimui-demo/)**
+**[📖 Documentation](https://heimui.io/sdk/)**
 
 </div>
 
@@ -88,7 +88,7 @@ cleartext.
 
 ## Integrating HeimUI in your own app
 
-Full guide at **[heimui-io.github.io/heimui-demo](https://heimui-io.github.io/heimui-demo/)**. The
+Full guide at **[heimui.io/sdk](https://heimui.io/sdk/)**. The
 short version:
 
 ```kotlin
@@ -147,7 +147,6 @@ sdui/screens/     the payloads — this is what changes when a screen changes
 shared/           the app: domain, data, presentation, design system, integration seams
 androidApp/       Android host
 iosApp/           iOS host
-docs/             the documentation site published to GitHub Pages
 art/              logo, brand guidelines, screenshots
 ```
 

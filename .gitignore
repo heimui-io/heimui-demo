@@ -18,7 +18,6 @@ captures
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
 
-# Working notes and prompts. This repo is public and is the reference integration people read —
-# process artefacts belong in the private workspace, not next to the published documentation.
-docs/PROMPT_*.md
-docs/*_NOTES.md
+# The documentation site moved to its own repo (heimui-docs), which serves heimui.io. A showcase
+# app's repo is the wrong place for Studio's docs to eventually land.
+docs/
