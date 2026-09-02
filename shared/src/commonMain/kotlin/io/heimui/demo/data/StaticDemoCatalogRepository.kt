@@ -45,7 +45,7 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
          * that exempts loopback addresses. Release builds still refuse cleartext.
          */
         var sduiBaseUrl: String =
-            "http://10.0.2.2:8099/sdui"
+            "https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui"
 
         const val HUB_SCREEN_ID: String = "hub/hub_screen.json"
 
