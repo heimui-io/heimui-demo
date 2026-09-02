@@ -95,6 +95,81 @@
         ]
       },
       {
+        "type": "select",
+        "id": "doc_type",
+        "state_key": "doc_type",
+        "label": "Document type",
+        "placeholder": "Select one",
+        "options": [
+          {
+            "value": "cc",
+            "label": "Cédula de ciudadanía"
+          },
+          {
+            "value": "ce",
+            "label": "Cédula de extranjería"
+          },
+          {
+            "value": "passport",
+            "label": "Passport"
+          }
+        ],
+        "validation_rules": [
+          {
+            "type": "REQUIRED",
+            "error_message": "Pick a document type"
+          }
+        ]
+      },
+      {
+        "type": "date_picker",
+        "id": "dob",
+        "state_key": "birth_date",
+        "label": "Date of birth",
+        "placeholder": "YYYY-MM-DD",
+        "min_date": "1900-01-01",
+        "max_date": "2007-12-31",
+        "validation_rules": [
+          {
+            "type": "REQUIRED",
+            "error_message": "Date of birth is required"
+          }
+        ]
+      },
+      {
+        "type": "radio_group",
+        "id": "funds",
+        "state_key": "funds_origin",
+        "label": "Origin of funds",
+        "options": [
+          {
+            "value": "salary",
+            "label": "Salary"
+          },
+          {
+            "value": "business",
+            "label": "Business income"
+          },
+          {
+            "value": "investments",
+            "label": "Investments"
+          }
+        ],
+        "initial_value": "salary"
+      },
+      {
+        "type": "checkbox",
+        "id": "terms",
+        "state_key": "accepted_terms",
+        "label": "I accept the terms and the privacy policy",
+        "validation_rules": [
+          {
+            "type": "REQUIRED",
+            "error_message": "You must accept to continue"
+          }
+        ]
+      },
+      {
         "type": "button",
         "id": "btn_sub_kyc",
         "title": "Submit KYC Verification",
@@ -118,7 +193,11 @@
               "legal_name": "{{state.legal_name}}",
               "tax_id": "{{state.tax_id}}",
               "is_business": "{{state.is_business}}",
-              "channel": "mobile-demo"
+              "channel": "mobile-demo",
+              "doc_type": "{{state.doc_type}}",
+              "birth_date": "{{state.birth_date}}",
+              "funds_origin": "{{state.funds_origin}}",
+              "accepted_terms": "{{state.accepted_terms}}"
             }
           },
           {
