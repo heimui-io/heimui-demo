@@ -1,163 +1,162 @@
-# Arquitectura de la app demo
+# Demo app architecture
 
-Esta app es una **implementación de referencia**: además de mostrar qué hace HeimUI, muestra cómo
-integrarlo. Las decisiones de abajo están tomadas para que un dev pueda copiarlas.
+This app is a **reference integration**: besides showing what HeimUI does, it shows how to wire it
+up. Every decision below is meant to be copied.
 
 ```
 shared/src/commonMain/kotlin/io/heimui/demo/
 │
 ├── App.kt                          entry point
 │
-├── domain/                         no depende de nada
+├── domain/                         depends on nothing
 │   ├── model/                      DemoVertical, DemoTab, DemoDestination
-│   ├── repository/                 DemoCatalogRepository (contrato)
-│   └── session/                    DemoSession (contrato de auth)
+│   ├── repository/                 DemoCatalogRepository (contract)
+│   └── session/                    DemoSession (auth contract)
 │
-├── data/                           implementa los contratos
-│   ├── StaticDemoCatalogRepository catálogo compilado + baseUrl del SDUI
+├── data/                           implements the contracts
+│   ├── StaticDemoCatalogRepository compiled-in catalog + the SDUI base URL
 │   └── session/                    InMemoryDemoSession, SettingsStorageDriver
 │
 ├── presentation/
-│   ├── DemoNavigationViewModel     navegación + traducción de HeimAction + deep links
-│   ├── VerticalViewModel           tab seleccionado + visor de payload
-│   └── navigation/DemoNavHost      destino → pantalla
+│   ├── DemoNavigationViewModel     navigation, HeimAction translation, deep links
+│   ├── VerticalViewModel           selected tab + payload inspector
+│   └── navigation/DemoNavHost      destination → screen
 │
-├── designsystem/                   NIVEL 1 y 2 — qué ve el usuario
-│   ├── DemoTheme                   el mapa completo de extensión, en un archivo
-│   ├── MaterialHeimIconProvider    un nombre del payload → un glifo tuyo
-│   ├── tokens/                     colores, tipografía, formas, espaciado
-│   └── components/                 NIVEL 3 — composables nativos por nombre
+├── designsystem/                   LEVELS 1 and 2 — what the user sees
+│   ├── DemoTheme                   the whole extension map, in one file
+│   ├── MaterialHeimIconProvider    a name from the payload → a glyph of yours
+│   ├── tokens/                     colours, typography, shapes, spacing
+│   └── components/                 LEVEL 3 — native composables addressed by name
 │
-├── integration/                    NIVEL 2 — cómo se comporta
-│   ├── DemoImageLoader             pide a la CDN el tamaño que se dibuja
-│   ├── DemoUrlLauncher             reclama heimui:// antes de salir al SO
-│   ├── DemoModalPresenter          diálogos y sheets con la forma de la app
-│   └── DemoActionInterceptors      corta un submit antes de que salga a la red
+├── integration/                    LEVEL 2 — how it behaves
+│   ├── DemoImageLoader             asks the CDN for the size actually drawn
+│   ├── DemoUrlLauncher             claims heimui:// before it reaches the OS
+│   ├── DemoModalPresenter          dialogs and sheets in the app's own shape
+│   └── DemoActionInterceptors      stops a submit before it reaches the network
 │
-├── devtools/                       el panel `</>`
-│   ├── SduiSourceInspector         el JSON detrás de la pantalla
-│   ├── DemoTelemetryObserver       eventos del SDK
-│   └── TelemetryLog                cómo se ven
+├── devtools/                       the `</>` panel
+│   ├── SduiSourceInspector         the JSON behind the screen
+│   ├── DemoTelemetryObserver       SDK events
+│   └── TelemetryLog                how they look
 │
 ├── di/DemoDependencies             composition root
 │
-└── ui/                             composables sin estado propio
+└── ui/                             composables that own no state
 ```
 
+## Why it is split this way
 
-## Por qué así
+**Each folder changes for a different reason and is owned by a different person.** A designer
+adjusting the palette opens `designsystem/` and never sees the navigation. Someone pointing the
+demo at another backend touches `di/` and nothing else.
 
-**Cada carpeta cambia por una razón distinta y la toca una persona distinta.** Un diseñador que
-ajusta la paleta abre `designsystem/` y nunca ve la navegación. Alguien que apunta la demo a otro
-backend toca `di/` y nada más.
+**`App.kt` is three lines on purpose.** It used to carry seven responsibilities: wiring, SDK
+initialisation, palette, brand tokens, component registration, navigation state, and a 48-line
+custom component. All of that now lives somewhere that names it.
 
-**`App.kt` tiene tres líneas a propósito.** Antes concentraba siete responsabilidades: wiring,
-inicialización del SDK, paleta, brand tokens, registro de componentes, estado de navegación y un
-componente custom de 48 líneas. Todo eso ahora vive donde se llama por su nombre.
+**Composables own no state.** They read a `uiState` and send intents. That is why rotating the
+phone does not lose the selected tab, and why the flow can be tested without a device.
 
-**Los composables no tienen estado propio.** Leen un `uiState` y llaman intents. Por eso rotar el
-teléfono no pierde la pestaña seleccionada, y por eso el flujo se puede testear sin dispositivo.
+## A ViewModel here, but not in the SDK
 
-## ViewModel aquí, pero no en el SDK
+`heimui-core` does **not** require a ViewModel. It is a library, and forcing a
+`ViewModelStoreOwner` on every consumer would impose a lifecycle dependency that is awkward on
+iOS — so the SDK uses `HeimScreenController`, a plain class.
 
-`heimui-core` **no** exige ViewModel: es una librería, y obligar a un `ViewModelStoreOwner` le
-impondría una dependencia de lifecycle a todos sus consumidores, cosa incómoda en iOS. Por eso el
-SDK usa `HeimScreenController`, una clase plana.
+An **app** has no such constraint. Here a ViewModel is exactly right: this state must survive
+configuration changes and be testable without a Compose harness.
 
-Una **app** no tiene esa restricción. Aquí ViewModel es exactamente lo correcto: el estado debe
-sobrevivir cambios de configuración y ser testeable sin un harness de Compose.
+Same reasoning, opposite conclusion, because the constraints differ. Worth understanding before
+copying either one.
 
-Mismo razonamiento, conclusión opuesta, porque las restricciones son distintas. Vale la pena
-entender por qué antes de copiar cualquiera de los dos.
+## Where the seam with the SDK is
 
-## Dónde está la costura con el SDK
+**HeimUI never navigates on its own.** It dispatches `NavigateAction` and stops there, because only
+the app knows its own graph. That translation lives in `DemoNavigationViewModel.onHeimAction()` —
+the single most important integration point, which is why it is isolated in one function.
 
-**HeimUI nunca navega solo.** Despacha `NavigateAction` y ahí se detiene, porque solo la app
-conoce su propio grafo. Esa traducción vive en `DemoNavigationViewModel.onHeimAction()` — es el
-punto de integración más importante y por eso está aislado en una sola función.
+What the SDK **does** do before calling you: it executes `submit_form` (with form validation and
+`{{state.*}}` interpolation), opens URLs under the scheme policy, and presents dialogs and bottom
+sheets. The app only handles what it alone can decide.
 
-Lo que el SDK **sí** hace antes de llamarte: ejecuta `submit_form` (con validación de formulario e
-interpolación de `{{state.*}}`), abre URLs bajo política de esquemas, y presenta diálogos y bottom
-sheets. La app solo maneja lo que únicamente ella puede decidir.
+## Screens come from the SDK's real repository
 
-## Las pantallas vienen del repositorio real del SDK
-
-Los ids de pantalla son rutas relativas:
+Screen ids are relative paths:
 
 ```
 {baseUrl}/screens/{screenId}
   → https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui/screens/hub/hub_screen.json
 ```
 
-Eso permite usar `HeimUI.initialize()` sin código de red propio, y hace que la demo ejercite de
-verdad la caché, la revalidación por ETag, el stale-while-revalidate, los timeouts y el circuit
-breaker. GitHub raw responde `304` ante `If-None-Match`, así que la ruta de revalidación se prueba
-sola cada vez que reabres una pantalla.
+That means `HeimUI.initialize()` needs no networking code of our own, and it makes the demo
+genuinely exercise the cache, ETag revalidation, stale-while-revalidate, timeouts and the circuit
+breaker. GitHub Raw answers `304` to `If-None-Match`, so the revalidation path is tested every time
+you reopen a screen.
 
-Una demo que trae el JSON con su propio `HttpClient` no demuestra nada de eso.
+A demo that fetches its JSON with its own `HttpClient` demonstrates none of that.
 
-## Los payloads son parte del contrato
+## Payloads are part of the contract
 
-Los JSON bajo `sdui/screens/` se validan contra
-[`heimui-screen.schema.json`](../heimui-core/schema/). Antes de publicar cambios:
+The JSON under `sdui/screens/` validates against
+[`heimui-screen.schema.json`](../heimui-core/schema/). Before publishing changes:
 
 ```bash
 npx ajv-cli validate -s ../heimui-core/schema/heimui-screen.schema.json \
   -d "sdui/screens/**/*.json" --spec=draft2020
 ```
 
-Un estilo mal escrito no rompe la app: cae al valor por defecto en silencio. Eso es tolerancia a
-fallos correcta en runtime, y precisamente por eso hace falta validar en CI — el schema es lo que
-convierte un fallo silencioso en un error visible.
+A misspelled style does not break the app: it falls back to the default, silently. That is correct
+fault tolerance at runtime, and exactly why validation belongs in CI — the schema is what turns a
+silent fallback into a visible error.
 
-## Para iterar sin publicar
+## Iterating without publishing
 
 ```bash
-cd sdui && python3 -m http.server 8080
+python3 -m http.server 8080
 ```
 
-Cambia `StaticDemoCatalogRepository.sduiBaseUrl` a `http://10.0.2.2:8080` (emulador Android) y
-habilita cleartext en el manifest mientras pruebas.
+Point `StaticDemoCatalogRepository.sduiBaseUrl` at `http://10.0.2.2:8080/sdui` (10.0.2.2 is the
+emulator's alias for the host machine). Plain HTTP only reaches a debug build: `src/debug` carries a
+network security config that exempts loopback addresses, and release builds still refuse cleartext.
 
+## The four levels of customisation, and where to look at each
 
-## Los cuatro niveles de personalización, y dónde mirarlos
+A client app does not have to choose between "use the SDK as it comes" and "fork it". There are four
+levels, and each has a concrete place in this app.
 
-Una app cliente no tiene que elegir entre "usar el SDK como viene" y "forkearlo". Hay cuatro
-niveles, y cada uno tiene un lugar concreto en esta app.
-
-| Nivel | Qué reemplaza | Aquí | Cómo está verificado |
+| Level | What it replaces | Here | How it is verified |
 |---|---|---|---|
-| **1. Tokens** | Cómo se ve | `designsystem/tokens/` | Se ve en cada pantalla |
-| **2. Providers** | Cómo se comporta | `designsystem/` e `integration/` | `IntegrationSeamsTest` + emulador |
-| **3. Custom components** | Composables propios | `designsystem/components/` | `stock_chart` en Storybook |
-| **4. Data layer** | El networking entero | `OfflineRepositoryTest` | Renderiza sin abrir un socket |
+| **1. Tokens** | How it looks | `designsystem/tokens/` | Visible on every screen |
+| **2. Providers** | How it behaves | `designsystem/` and `integration/` | `IntegrationSeamsTest` + on device |
+| **3. Custom components** | Your own composables | `designsystem/components/` | `stock_chart` in Storybook |
+| **4. Data layer** | The networking entirely | `OfflineRepositoryTest` | Renders with no socket opened |
 
-Todo el nivel 1 y 2 se cablea en **un solo archivo**: `designsystem/DemoTheme`. Es a propósito —
-quien integre debería poder leer una pantalla de código y conocer todas sus costuras.
+All of levels 1 and 2 is wired in **one file**: `designsystem/DemoTheme`. That is deliberate —
+an integrator should be able to read one screenful of code and know every seam they own.
 
-### Tres de estas costuras no tienen píxeles
+### Three of these seams have no pixels
 
-Un interceptor que rechaza un submit y un launcher que reclama un esquema son invisibles cuando
-funcionan. Por eso están fijados con tests y no con capturas:
+An interceptor that refuses a submit and a launcher that claims a scheme are invisible when they
+work. That is why they are pinned by tests rather than screenshots:
 
-- `RequireSessionInterceptor` no llama a `next`, así que el request **nunca se construye**. Un
-  check dentro de una pantalla solo protege esa pantalla; en el pipeline lo heredan todas,
-  incluidas las que se escriban después.
-- `DemoUrlLauncher` reclama `heimui://` y devuelve `true`. Entregárselo al SO sacaría al usuario
-  de la app y lo haría volver por un cold start, perdiendo el back stack en el camino.
-- La política de esquemas es **allow-list, no deny-list**. `intent://` alcanza componentes no
-  exportados en Android y `file://` expone almacenamiento local; una deny-list siempre se va a
-  perder el siguiente esquema que nadie pensó.
+- `RequireSessionInterceptor` does not call `next`, so the request is **never built**. A check
+  inside one screen protects that screen; in the pipeline every screen inherits it, including
+  screens written after this code.
+- `DemoUrlLauncher` claims `heimui://` and returns `true`. Handing it to the OS would take the user
+  out of the app and bring them back through a cold start, losing the back stack on the way.
+- The scheme policy is an **allow-list, not a deny-list**. `intent://` reaches unexported components
+  on Android and `file://` discloses local storage; a deny-list will always miss the next scheme
+  nobody thought of.
 
-### El storage es real
+### Storage is real
 
-`SettingsStorageDriver` era un mapa en memoria con un comentario admitiéndolo — lo que hacía
-decorativos tanto el "cache persistente" como los borradores de formulario. Ahora está sobre
-SharedPreferences (Android) y NSUserDefaults (iOS) vía `expect`/`actual`, sin agregar dependencias.
+`SettingsStorageDriver` used to be an in-memory map with a comment admitting it, which made both the
+"persistent cache" and the form drafts decorative. It now sits on SharedPreferences (Android) and
+NSUserDefaults (iOS) through `expect`/`actual`, with no dependency added.
 
-Verificado de la forma que importa: se llena el KYC, se mata el proceso con `am force-stop`, la
-app arranca en frío y **el campo vuelve lleno** — también en build minificado con R8.
+Verified the way that counts: fill in the KYC form, kill the process with `am force-stop`, cold
+start the app, and **the field comes back filled** — including in a minified R8 build.
 
-No está cifrado. Una app cuyos payloads carguen un saldo, un nombre o un documento quiere
-EncryptedSharedPreferences o el Keychain ahí. `HeimStorageDriver` son cuatro métodos, así que ese
-cambio toca un archivo.
+It is not encrypted. An app whose payloads carry a balance, a name or a document number wants
+EncryptedSharedPreferences or the Keychain there instead. `HeimStorageDriver` is four methods, so
+that swap touches one file.

@@ -17,3 +17,8 @@ captures
 !*.xcworkspace/contents.xcworkspacedata
 **/xcshareddata/WorkspaceSettings.xcsettings
 node_modules/
+
+# Working notes and prompts. This repo is public and is the reference integration people read —
+# process artefacts belong in the private workspace, not next to the published documentation.
+docs/PROMPT_*.md
+docs/*_NOTES.md

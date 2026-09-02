@@ -14,23 +14,35 @@
 
 ---
 
-## 🎨 2. Official Color Palette
+## 🎨 2. Colour
 
-| Token Name | HEX | RGB | HSL | Semantic Role |
-| :--- | :--- | :--- | :--- | :--- |
-| **Obsidian Dark** | `#0B0F19` | `11, 15, 25` | `223°, 39%, 7%` | Background Base / Canvas |
-| **Slate Surface** | `#161D2F` | `22, 29, 47` | `223°, 36%, 14%` | Card / Container Background |
-| **Electric Cyan** | `#00E5FF` | `0, 229, 255` | `186°, 100%, 50%` | Primary Accent / Bifrost Network / Active State |
-| **Neon Violet** | `#A855F7` | `168, 85, 247` | `271°, 91%, 65%` | Secondary Accent / Compose Native Engine |
-| **Deep Indigo** | `#4F46E5` | `79, 70, 229` | `243°, 75%, 59%` | Gradient Midtone / Structural Accents |
-| **Guardian Tan** | `#D97706` | `217, 119, 6` | `32°, 95%, 44%` | Heimdall Brow Accent / Warnings / Badges |
-| **Blaze White** | `#FFFFFF` | `255, 255, 255` | `0°, 0%, 100%` | High-contrast Foreground / Central Forehead Blaze |
-| **Muted Smoke** | `#94A3B8` | `148, 163, 184`| `215°, 20%, 65%` | Secondary Text / Subtitles |
+These are the **brand** colours — the logo, the banner, marketing surfaces.
 
-### Primary Brand Gradient
+| Token | HEX | Role |
+| :--- | :--- | :--- |
+| **Obsidian Dark** | `#0B0F19` | Canvas |
+| **Slate Surface** | `#161D2F` | Cards and containers |
+| **Electric Cyan** | `#00E5FF` | Primary accent |
+| **Neon Violet** | `#A855F7` | Secondary accent |
+| **Deep Indigo** | `#4F46E5` | Gradient midtone — logo and banner only |
+| **Guardian Tan** | `#D97706` | Brow accent in the mark |
+| **Blaze White** | `#FFFFFF` | High-contrast foreground |
+| **Muted Smoke** | `#94A3B8` | Secondary text |
+
 ```css
+/* Primary brand gradient */
 background: linear-gradient(135deg, #00E5FF 0%, #4F46E5 50%, #A855F7 100%);
 ```
+
+> **The app's palette is not here.** It lives in
+> [`DemoColors.kt`](../shared/src/commonMain/kotlin/io/heimui/demo/designsystem/tokens/DemoColors.kt),
+> which is what the code actually reads — including the semantic colours a brand palette has no
+> opinion about (success, warning, error, surface variants).
+>
+> Restating them here would create two lists that disagree, and they already had: this file
+> documented two colours the app never used, and omitted six that it does. A brand palette and a
+> product palette are different artefacts with different owners; keeping them in one place makes
+> both wrong.
 
 ---
 

@@ -513,17 +513,17 @@ fun HomeRoute(navController: NavController) {
     blocks: [
       html(`<p>Any action can carry the analytics event it should report. The SDK never looks inside the
       map — it carries the names the payload chose and hands them over.</p>`),
-      code(J, `{ "type": "navigate", "screen_id": "shopfront",
+      code(J, `{ "type": "navigate", "screen_id": "catalog",
   "tracking": {
-    "analytics": { "eventName": "categories", "eventAction": "click",
-                   "attributes": { "event_category": "home" } },
-    "amplitude": { "event": "click category home",
-                   "properties": [ { "key": "event_id", "value": 7 } ] }
+    "primary":   { "name": "select_category",
+                   "params": { "category_id": "audio", "position": 2 } },
+    "warehouse": { "event": "catalog.category.selected",
+                   "attributes": [ { "key": "surface", "value": "home" } ] }
   }}`),
       code(K, `HeimTheme(
     trackingDispatcher = { _, payload ->
-        payload["analytics"]?.let { analytics.log(it) }
-        payload["amplitude"]?.let { amplitude.log(it) }
+        payload["primary"]?.let { firstProvider.log(it) }
+        payload["warehouse"]?.let { secondProvider.log(it) }
     },
 ) { … }`),
       html(`<p>Nested objects and arrays survive intact, so one block per provider works — each names the same

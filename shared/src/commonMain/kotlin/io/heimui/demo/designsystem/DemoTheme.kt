@@ -148,7 +148,6 @@ fun DemoTheme(
     }
 
     HeimTheme(
-        darkTheme = darkTheme,
         colorScheme = if (darkTheme) DemoColors.darkScheme else DemoColors.lightScheme,
         iconProvider = iconProvider,
         typography = DemoTypography.scale,

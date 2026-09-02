@@ -52,7 +52,7 @@ internal fun StockChartCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "📈 Custom Plugin: $ticker Stock Widget",
+                    text = "$ticker · rendered by a native plugin",
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.primary
                 )

@@ -9,10 +9,8 @@
     <string name="cd_app_logo">HeimUI logo</string>
 
     <!-- Source inspector: the </> tool that shows the payload behind a screen -->
-    <string name="source_title">Screen payload</string>
     <string name="cd_view_source">View the JSON behind this screen</string>
     <string name="source_loading">Loading…</string>
-    <string name="source_error">Could not load the payload: %1$s</string>
     <string name="source_heading">Remote SDUI payload · %1$s</string>
     <string name="source_placeholder">Fetching the payload from GitHub Raw…</string>
     <string name="telemetry_title">SDK events</string>
