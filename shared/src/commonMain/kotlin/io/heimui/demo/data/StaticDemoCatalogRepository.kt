@@ -1,5 +1,6 @@
 package io.heimui.demo.data
 
+import io.heimui.demo.DemoBuildConfig
 import io.heimui.demo.domain.model.DemoTab
 import io.heimui.demo.domain.model.DemoVertical
 import io.heimui.demo.domain.repository.DemoCatalogRepository
@@ -28,24 +29,25 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
 
     companion object {
         /**
-         * Root of the static SDUI files.
+         * Root of the SDUI payloads.
          *
-         * GitHub raw serves an `ETag` and honours `If-None-Match`, so pointing the SDK here
-         * exercises the real revalidation path (304 → serve cache) instead of refetching on
-         * every open.
+         * Defaults to GitHub Raw, which serves an `ETag` and honours `If-None-Match`, so a clone
+         * with no backend still exercises the real revalidation path (304 → serve cache) instead
+         * of refetching on every open.
          *
-         * To iterate locally, serve the repo root and point this at the host machine:
+         * The value is generated at build time from `local.properties`, which is not version
+         * controlled, so a local host never reaches `main`:
          *
          * ```
-         * python3 -m http.server 8080
-         * sduiBaseUrl = "http://10.0.2.2:8080/sdui"   // 10.0.2.2 is the emulator's host loopback
+         * sdui.baseUrl=http://10.0.2.2:8080      # a HeimUI Studio; 10.0.2.2 is the emulator's host
+         * sdui.baseUrl=http://10.0.2.2:8080/sdui # or `python3 -m http.server 8080` from the repo root
          * ```
          *
          * Plain HTTP only reaches the app because `src/debug` carries a network security config
-         * that exempts loopback addresses. Release builds still refuse cleartext.
+         * that exempts loopback addresses. Release builds still refuse cleartext, which is why a
+         * release build of the showcase only works against the remote default.
          */
-        var sduiBaseUrl: String =
-            "https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui"
+        val sduiBaseUrl: String = DemoBuildConfig.SDUI_BASE_URL
 
         const val HUB_SCREEN_ID: String = "hub/hub_screen.json"
 

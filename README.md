@@ -75,15 +75,25 @@ open iosApp/iosApp.xcodeproj
 
 The app talks to static payloads on GitHub Raw, so there is no backend to stand up.
 
-**To iterate on payloads**, serve the repo root, which is where `sdui/` lives:
+**To iterate on payloads**, point the app somewhere else with one line in `local.properties`.
+That file is not version controlled, so a host that only resolves on your machine cannot reach
+`main`:
 
-```bash
-python3 -m http.server 8080
+```properties
+sdui.baseUrl=http://10.0.2.2:8080
 ```
 
-Then set `StaticDemoCatalogRepository.sduiBaseUrl` to `http://10.0.2.2:8080/sdui` — `10.0.2.2` is
-the emulator's alias for your host. Plain HTTP reaches debug builds only; release still refuses
-cleartext.
+`10.0.2.2` is the Android emulator's alias for your host — on the iOS simulator use
+`http://localhost:8080`. Two things worth serving there:
+
+```bash
+python3 -m http.server 8080          # from the repo root; add /sdui to the URL above
+cd ../heimui-studio && docker compose up   # a HeimUI Studio; the URL above is already right
+```
+
+`-PsduiBaseUrl=http://…` overrides it for a single build without touching the file. Plain HTTP
+reaches debug builds only; release still refuses cleartext, so a release build always talks to the
+remote default.
 
 **To run against an unreleased SDK build**, publish it from a `heimui-core` checkout first:
 
