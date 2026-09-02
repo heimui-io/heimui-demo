@@ -75,16 +75,27 @@ open iosApp/iosApp.xcodeproj
 
 The app talks to static payloads on GitHub Raw, so there is no backend to stand up.
 
-To iterate on payloads locally, serve them and point the app at your machine:
+**To iterate on payloads**, serve the repo root, which is where `sdui/` lives:
 
 ```bash
 python3 -m http.server 8080
-./gradlew :androidApp:installDebug -PheimuiCore=0.0.1-alpha-1-LOCAL
 ```
 
 Then set `StaticDemoCatalogRepository.sduiBaseUrl` to `http://10.0.2.2:8080/sdui` — `10.0.2.2` is
 the emulator's alias for your host. Plain HTTP reaches debug builds only; release still refuses
 cleartext.
+
+**To run against an unreleased SDK build**, publish it from a `heimui-core` checkout first:
+
+```bash
+./gradlew -p ../heimui-core publishLocal
+```
+
+That publishes the coordinate with a `-LOCAL` suffix, alongside the released one. Then pass it:
+
+```bash
+./gradlew :androidApp:installDebug -PheimuiCore=0.0.1-alpha-1-LOCAL
+```
 
 ## Integrating HeimUI in your own app
 
