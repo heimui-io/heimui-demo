@@ -18,7 +18,7 @@ kotlinx-coroutines = "1.11.0"
 ktor = "3.5.2"
 # Point at a local build with:  ./gradlew -PheimuiCore=0.0.1-alpha-LOCAL
 # See heimui-core's `publishLocal` task, which publishes that coordinate alongside the released one.
-heimuiCore = "0.0.1-alpha"
+heimuiCore = "0.0.1-alpha-1"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }

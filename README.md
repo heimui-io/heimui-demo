@@ -79,7 +79,7 @@ To iterate on payloads locally, serve them and point the app at your machine:
 
 ```bash
 python3 -m http.server 8080
-./gradlew :androidApp:installDebug -PheimuiCore=0.0.1-alpha-LOCAL
+./gradlew :androidApp:installDebug -PheimuiCore=0.0.1-alpha-1-LOCAL
 ```
 
 Then set `StaticDemoCatalogRepository.sduiBaseUrl` to `http://10.0.2.2:8080/sdui` — `10.0.2.2` is
@@ -93,7 +93,7 @@ short version:
 
 ```kotlin
 dependencies {
-    implementation("io.heimui:heimui-core:0.0.1-alpha")
+    implementation("io.heimui:heimui-core:0.0.1-alpha-1")
 }
 ```
 

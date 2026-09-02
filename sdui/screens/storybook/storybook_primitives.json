@@ -98,6 +98,119 @@
         "state_key": "sb_sample_input",
         "label": "Dynamic Form Field",
         "placeholder": "Type here to see state react..."
+      },
+      {
+        "type": "text",
+        "id": "t_rich_hdr",
+        "text": "Rich text",
+        "style": "titleMedium",
+        "color": "primary"
+      },
+      {
+        "type": "card",
+        "id": "c_rich",
+        "background_color": "surface",
+        "corner_radius": 12,
+        "padding": 16,
+        "child": {
+          "type": "rich_text",
+          "id": "rt_legal",
+          "style": "bodyMedium",
+          "align": "START",
+          "spans": [
+            {
+              "text": "One paragraph, many runs. "
+            },
+            {
+              "text": "Bold",
+              "weight": "bold"
+            },
+            {
+              "text": ", "
+            },
+            {
+              "text": "tinted",
+              "color": "primary"
+            },
+            {
+              "text": ", and a "
+            },
+            {
+              "text": "link",
+              "weight": "semibold",
+              "url": "https://heimui.io/sdk/#richtext"
+            },
+            {
+              "text": " that opens through the same scheme policy as any action — so "
+            },
+            {
+              "text": "javascript:",
+              "weight": "medium"
+            },
+            {
+              "text": " is refused in prose exactly as it is in a button."
+            }
+          ]
+        }
+      },
+      {
+        "type": "text",
+        "id": "t_style_hdr",
+        "text": "Container styling",
+        "style": "titleMedium",
+        "color": "primary"
+      },
+      {
+        "type": "container",
+        "id": "style_demo",
+        "direction": "HORIZONTAL",
+        "spacing": 10,
+        "scrollable": false,
+        "children": [
+          {
+            "type": "box",
+            "id": "sw_radius",
+            "weight": 1,
+            "frame": {
+              "min_height": 64
+            },
+            "corner_radius": 16,
+            "background_color": "primaryContainer",
+            "padding": 12,
+            "content_alignment": "CENTER",
+            "children": [
+              {
+                "type": "text",
+                "id": "sw_r_t",
+                "text": "radius 16",
+                "style": "labelMedium",
+                "color": "onPrimaryContainer"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "id": "sw_border",
+            "weight": 1,
+            "frame": {
+              "min_height": 64
+            },
+            "corner_radius": 16,
+            "border_color": "primary",
+            "border_width": 2,
+            "padding": 12,
+            "content_alignment": "CENTER",
+            "children": [
+              {
+                "type": "text",
+                "id": "sw_b_t",
+                "text": "border 2dp",
+                "style": "labelMedium",
+                "color": "primary"
+              }
+            ]
+          }
+        ]
       }
     ]
   }
