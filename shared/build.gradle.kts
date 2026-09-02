@@ -42,7 +42,14 @@ kotlin {
             implementation(libs.ktor.client.darwin)
         }
         commonMain.dependencies {
-            implementation(libs.heimui.core)
+            // Overridable so the showcase can be built against an unreleased SDK without
+            // overwriting the released coordinate in the local Maven cache:
+            //   ./gradlew :androidApp:assembleDebug -PheimuiCore=0.0.1-alpha-LOCAL
+            implementation(
+                (project.findProperty("heimuiCore") as String?)
+                    ?.let { "io.heimui:heimui-core:$it" }
+                    ?: libs.heimui.core
+            )
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material3)

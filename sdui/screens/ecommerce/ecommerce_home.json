@@ -70,34 +70,55 @@
         "spacing": 10,
         "items": [
           {
-            "type": "badge",
-            "id": "c1",
-            "text": "🎧 Audio Pro",
-            "background_color": "#4F46E5",
-            "text_color": "#FFFFFF"
+            "type": "chip",
+            "id": "c_all",
+            "label": "All",
+            "variant": "FILTER",
+            "state_key": "category",
+            "value": "all",
+            "icon": "widgets"
           },
           {
-            "type": "badge",
-            "id": "c2",
-            "text": "⌚ Smartwatches",
-            "background_color": "#1E293B",
-            "text_color": "#E2E8F0"
+            "type": "chip",
+            "id": "c_audio",
+            "label": "Audio",
+            "variant": "FILTER",
+            "state_key": "category",
+            "value": "audio",
+            "icon": "headphones"
           },
           {
-            "type": "badge",
-            "id": "c3",
-            "text": "⌨️ Keyboards",
-            "background_color": "#1E293B",
-            "text_color": "#E2E8F0"
+            "type": "chip",
+            "id": "c_mobile",
+            "label": "Mobile",
+            "variant": "FILTER",
+            "state_key": "category",
+            "value": "mobile"
           },
           {
-            "type": "badge",
-            "id": "c4",
-            "text": "📱 Mobile",
-            "background_color": "#1E293B",
-            "text_color": "#E2E8F0"
+            "type": "chip",
+            "id": "c_deals",
+            "label": "Deals",
+            "variant": "FILTER",
+            "state_key": "category",
+            "value": "deals",
+            "icon": "local_fire_department"
+          },
+          {
+            "type": "chip",
+            "id": "c_help",
+            "label": "Help",
+            "actions": [
+              {
+                "type": "show_snackbar",
+                "message": "An action chip, not a filter"
+              }
+            ]
           }
-        ]
+        ],
+        "padding": {
+          "horizontal": 16
+        }
       },
       {
         "type": "box",
