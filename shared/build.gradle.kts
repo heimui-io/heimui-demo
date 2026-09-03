@@ -9,6 +9,18 @@ plugins {
     alias(libs.plugins.kotlinSerialization)
 }
 
+/**
+ * A key from `local.properties`, which is not version controlled.
+ *
+ * Read through the provider API rather than by opening the file, so the configuration cache
+ * re-runs when the file changes instead of serving a stale value.
+ */
+fun localProperty(name: String): Provider<String> =
+    providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
+        .asText
+        .map { text -> Properties().apply { load(text.reader()) }.getProperty(name).orEmpty() }
+        .filter { it.isNotBlank() }
+
 // Where the showcase fetches its screens from.
 //
 // The default is GitHub Raw, so a fresh clone renders all 17 screens with no backend to stand up.
@@ -19,18 +31,17 @@ plugins {
 //   sdui.baseUrl=http://10.0.2.2:8080
 //
 // `-PsduiBaseUrl=...` overrides it for a single build, the way `-PheimuiCore` does for the SDK.
-//
-// Read through the provider API rather than by opening the file directly, so the configuration
-// cache re-runs this when `local.properties` changes instead of serving a stale URL.
 val sduiBaseUrl: Provider<String> =
     providers.gradleProperty("sduiBaseUrl")
-        .orElse(
-            providers.fileContents(rootProject.layout.projectDirectory.file("local.properties"))
-                .asText
-                .map { text -> Properties().apply { load(text.reader()) }.getProperty("sdui.baseUrl").orEmpty() }
-                .filter { it.isNotBlank() }
-        )
+        .orElse(localProperty("sdui.baseUrl"))
         .orElse("https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui")
+
+// Which build of the SDK the showcase compiles against. Empty unless someone asked for a local
+// one, in which case the coordinate carries a `-LOCAL` suffix so a failure always names the build
+// it came from.
+val heimuiCoreVersion: Provider<String> =
+    providers.gradleProperty("heimuiCore")
+        .orElse(localProperty("heimui.core.version"))
 
 val generateDemoBuildConfig by tasks.registering {
     val outputDir = layout.buildDirectory.dir("generated/demoBuildConfig")
@@ -91,12 +102,20 @@ kotlin {
         }
         commonMain.dependencies {
             // Overridable so the showcase can be built against an unreleased SDK without
-            // overwriting the released coordinate in the local Maven cache:
-            //   ./gradlew :androidApp:assembleDebug -PheimuiCore=0.0.1-alpha-LOCAL
+            // overwriting the released coordinate in the local Maven cache. Same precedence as
+            // `sdui.baseUrl`: a Gradle property for one build, `local.properties` for this
+            // machine, the released coordinate for everyone else.
+            //
+            //   ./gradlew :heimui-core:publishLocal        → 0.0.1-alpha-1-LOCAL
+            //   heimui.core.version=0.0.1-alpha-1-LOCAL    in local.properties
+            //
+            // `mavenLocal()` is already first in settings.gradle.kts, so the local build resolves
+            // without any further wiring.
             implementation(
-                (project.findProperty("heimuiCore") as String?)
-                    ?.let { "io.heimui:heimui-core:$it" }
-                    ?: libs.heimui.core
+                heimuiCoreVersion
+                    .map { "io.heimui:heimui-core:$it" as Any }
+                    .orElse(provider { libs.heimui.core.get() as Any })
+                    .get()
             )
             implementation(compose.runtime)
             implementation(compose.foundation)
