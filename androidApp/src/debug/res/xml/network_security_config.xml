@@ -6,7 +6,7 @@
   It exists because iterating on payloads locally means serving them over plain HTTP:
 
       python3 -m http.server 8080          # from the repo root
-      StaticDemoCatalogRepository.sduiBaseUrl = "http://10.0.2.2:8080/sdui"
+      StaticDemoCatalogRepository.sduiBaseUrl = "http://10.0.2.2:8080/sdui/screens"
 
   10.0.2.2 is the emulator's alias for the host machine's loopback. Without this exemption the
   SDK reports "CLEARTEXT communication not permitted", which reads like an SDK fault and is not.

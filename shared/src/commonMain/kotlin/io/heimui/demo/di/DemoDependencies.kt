@@ -41,10 +41,11 @@ class DemoDependencies(
     /**
      * Initialises the SDK once per process.
      *
-     * Screens resolve to `{baseUrl}/screens/{screenId}`, which is exactly how the static files
-     * are laid out on GitHub — so the demo goes through the SDK's real repository and exercises
-     * its cache, ETag revalidation, stale-while-revalidate, timeouts and circuit breaker instead
-     * of a hand-rolled fetcher that would demonstrate none of them.
+     * Screens resolve to `{baseUrl}/{screenId}` — the SDK adds nothing to the path, so the base
+     * already carries the `/screens` these payloads are filed under. The demo goes through the
+     * SDK's real repository and exercises its cache, ETag revalidation, stale-while-revalidate,
+     * timeouts and circuit breaker instead of a hand-rolled fetcher that would demonstrate none
+     * of them.
      */
     fun initializeSdk() {
         if (!HeimUI.isInitialized) {

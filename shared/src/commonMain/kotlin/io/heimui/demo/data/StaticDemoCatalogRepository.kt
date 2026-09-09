@@ -29,7 +29,12 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
 
     companion object {
         /**
-         * Root of the SDUI payloads.
+         * Root of the SDUI payloads, as a full path rather than an origin.
+         *
+         * A screen id resolves against this verbatim — the SDK adds no path segment of its own,
+         * because where payloads live is the backend's decision, not the SDK's. That is why every
+         * value below ends in `/screens`: it is where this repository happens to keep them, and it
+         * keeps the ids in [VERTICALS] down to `vertical/screen.json`.
          *
          * Defaults to GitHub Raw, which serves an `ETag` and honours `If-None-Match`, so a clone
          * with no backend still exercises the real revalidation path (304 → serve cache) instead
@@ -39,8 +44,8 @@ class StaticDemoCatalogRepository : DemoCatalogRepository {
          * controlled, so a local host never reaches `main`:
          *
          * ```
-         * sdui.baseUrl=http://10.0.2.2:8080      # a HeimUI Studio; 10.0.2.2 is the emulator's host
-         * sdui.baseUrl=http://10.0.2.2:8080/sdui # or `python3 -m http.server 8080` from the repo root
+         * sdui.baseUrl=http://10.0.2.2:8080/screens      # a HeimUI Studio; 10.0.2.2 is the emulator's host
+         * sdui.baseUrl=http://10.0.2.2:8080/sdui/screens # or `python3 -m http.server 8080` from the repo root
          * ```
          *
          * Plain HTTP only reaches the app because `src/debug` carries a network security config

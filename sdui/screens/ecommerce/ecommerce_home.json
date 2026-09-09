@@ -22,14 +22,14 @@
           {
             "type": "card",
             "id": "hero_promo",
-            "background_color": "#161D2F",
-            "border_color": "#00E5FF",
+            "background_color": "neutral_light_lightest",
+            "border_color": "highlight_darkest",
             "corner_radius": 16,
             "padding": 18,
             "actions": [
               {
                 "type": "show_snackbar",
-                "message": "🔥 Summer Sale Campaign Activated!"
+                "message": "\ud83d\udd25 Summer Sale Campaign Activated!"
               }
             ],
             "child": {
@@ -41,23 +41,23 @@
                 {
                   "type": "badge",
                   "id": "b_deal",
-                  "text": "⚡ FLASH SALE · 50% OFF",
-                  "background_color": "#00E5FF",
-                  "text_color": "#0B0F19"
+                  "text": "\u26a1 FLASH SALE \u00b7 50% OFF",
+                  "background_color": "highlight_darkest",
+                  "text_color": "neutral_light_lightest"
                 },
                 {
                   "type": "text",
                   "id": "t_hero",
                   "text": "Cyberpunk Gear & Tech",
                   "style": "headlineSmall",
-                  "color": "#FFFFFF"
+                  "color": "neutral_dark_darkest"
                 },
                 {
                   "type": "text",
                   "id": "t_sub",
                   "text": "Streamed dynamically from HeimUI backend without app store releases.",
                   "style": "bodySmall",
-                  "color": "#94A3B8"
+                  "color": "neutral_dark_lightest"
                 }
               ]
             }
@@ -77,7 +77,7 @@
             "id": "cat_hdr",
             "text": "Featured Categories",
             "style": "titleMedium",
-            "color": "#00E5FF"
+            "color": "highlight_darkest"
           }
         ]
       },
@@ -93,7 +93,13 @@
             "variant": "FILTER",
             "state_key": "category",
             "value": "all",
-            "icon": "widgets"
+            "icon": "widgets",
+            "background_color": "neutral_light_lightest",
+            "accent_color": "highlight_darkest",
+            "text_color": "highlight_darkest",
+            "border_color": "highlight_darkest",
+            "border_width": 1,
+            "corner_radius": 999
           },
           {
             "type": "chip",
@@ -102,7 +108,13 @@
             "variant": "FILTER",
             "state_key": "category",
             "value": "audio",
-            "icon": "headphones"
+            "icon": "headphones",
+            "background_color": "neutral_light_lightest",
+            "accent_color": "highlight_darkest",
+            "text_color": "highlight_darkest",
+            "border_color": "highlight_darkest",
+            "border_width": 1,
+            "corner_radius": 999
           },
           {
             "type": "chip",
@@ -110,7 +122,13 @@
             "label": "Mobile",
             "variant": "FILTER",
             "state_key": "category",
-            "value": "mobile"
+            "value": "mobile",
+            "background_color": "neutral_light_lightest",
+            "accent_color": "highlight_darkest",
+            "text_color": "highlight_darkest",
+            "border_color": "highlight_darkest",
+            "border_width": 1,
+            "corner_radius": 999
           },
           {
             "type": "chip",
@@ -119,7 +137,13 @@
             "variant": "FILTER",
             "state_key": "category",
             "value": "deals",
-            "icon": "local_fire_department"
+            "icon": "local_fire_department",
+            "background_color": "neutral_light_lightest",
+            "accent_color": "highlight_darkest",
+            "text_color": "highlight_darkest",
+            "border_color": "highlight_darkest",
+            "border_width": 1,
+            "corner_radius": 999
           },
           {
             "type": "chip",
@@ -130,7 +154,13 @@
                 "type": "show_snackbar",
                 "message": "An action chip, not a filter"
               }
-            ]
+            ],
+            "background_color": "neutral_light_lightest",
+            "accent_color": "highlight_darkest",
+            "text_color": "highlight_darkest",
+            "border_color": "highlight_darkest",
+            "border_width": 1,
+            "corner_radius": 999
           }
         ],
         "padding": {
@@ -139,81 +169,1153 @@
       },
       {
         "type": "box",
-        "id": "promo_overlay",
-        "content_alignment": "CENTER",
-        "children": [
-          {
-            "type": "image",
-            "id": "promo_bg",
-            "url": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800",
-            "aspect_ratio": 2.2,
-            "corner_radius": 16
-          },
-          {
-            "type": "badge",
-            "id": "promo_tag",
-            "text": "⚡ 2-FOR-1 ALL DAY",
-            "background_color": "brand_primary",
-            "text_color": "surface_base"
-          }
-        ],
-        "padding": {
-          "horizontal": 16
-        }
-      },
-      {
-        "type": "spacer",
-        "id": "promo_gap",
-        "size": 8
-      },
-      {
-        "type": "box",
-        "id": "btn_terms_inset",
+        "id": "hdr_sports_inset",
         "padding": {
           "horizontal": 16
         },
         "content_alignment": "START",
         "children": [
           {
-            "type": "button",
-            "id": "btn_terms",
-            "title": "View terms",
-            "variant": "OUTLINED",
-            "is_full_width": true,
-            "actions": [
-              {
-                "type": "show_bottom_sheet",
-                "title": "Promotion terms",
-                "is_dismissible": true,
-                "content": {
+            "type": "text",
+            "id": "hdr_sports_title",
+            "text": "Deportivos",
+            "style": "titleMedium",
+            "color": "highlight_darkest"
+          }
+        ]
+      },
+      {
+        "type": "lazy_row",
+        "id": "row_sports",
+        "spacing": 12,
+        "padding": {
+          "horizontal": 16
+        },
+        "items": [
+          {
+            "type": "card",
+            "id": "product_card_sports_1",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_sports_1",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_sports_1",
+                  "url": "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
                   "type": "container",
-                  "id": "terms_sheet",
-                  "padding": 8,
-                  "spacing": 16,
-                  "scrollable": false,
+                  "id": "prod_meta_product_card_sports_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_sports_1",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_sports_1",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_sports_1",
+                          "text": "4.9",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_sports_1",
+                      "text": "NEW",
+                      "background_color": "support_success_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_sports_1",
+                  "text": "Nike Air Zoom Max",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_sports_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
                   "children": [
                     {
                       "type": "text",
-                      "id": "terms_body",
-                      "style": "legal",
-                      "text": "Offer valid while stocks last. This text uses the 'legal' brand token, registered by the app — the server only names it."
+                      "id": "prod_price_product_card_sports_1",
+                      "text": "$139.99",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
                     },
                     {
                       "type": "button",
-                      "id": "terms_close",
-                      "title": "Got it",
+                      "id": "prod_add_product_card_sports_1",
+                      "title": "Add",
                       "variant": "FILLED",
-                      "is_full_width": true,
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
                       "actions": [
                         {
-                          "type": "dismiss_modal"
+                          "type": "show_snackbar",
+                          "message": "Nike Air Zoom Max a\u00f1adido al carrito \ud83d\udecd\ufe0f"
                         }
                       ]
                     }
                   ]
                 }
-              }
-            ]
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_sports_2",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_sports_2",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_sports_2",
+                  "url": "https://images.unsplash.com/photo-1508614589041-895b88991e3e?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_sports_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_sports_2",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_sports_2",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_sports_2",
+                          "text": "4.8",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_sports_2",
+                      "text": "-20%",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_sports_2",
+                  "text": "Garmin Pro GPS",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_sports_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_sports_2",
+                      "text": "$189.00",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_sports_2",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Garmin Pro GPS a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_sports_3",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_sports_3",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_sports_3",
+                  "url": "https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_sports_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_sports_3",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_sports_3",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_sports_3",
+                          "text": "4.7",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_sports_3",
+                      "text": "POPULAR",
+                      "background_color": "support_success_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_sports_3",
+                  "text": "Adidas Gym Set",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_sports_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_sports_3",
+                      "text": "$74.50",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_sports_3",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Adidas Gym Set a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "id": "hdr_tech_inset",
+        "padding": {
+          "horizontal": 16
+        },
+        "content_alignment": "START",
+        "children": [
+          {
+            "type": "text",
+            "id": "hdr_tech_title",
+            "text": "Tecnolog\u00eda & Audio",
+            "style": "titleMedium",
+            "color": "highlight_darkest"
+          }
+        ]
+      },
+      {
+        "type": "lazy_row",
+        "id": "row_tech",
+        "spacing": 12,
+        "padding": {
+          "horizontal": 16
+        },
+        "items": [
+          {
+            "type": "card",
+            "id": "product_card_tech_1",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_tech_1",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_tech_1",
+                  "url": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_tech_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_tech_1",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_tech_1",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_tech_1",
+                          "text": "4.9",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_tech_1",
+                      "text": "BEST SELLER",
+                      "background_color": "support_success_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_tech_1",
+                  "text": "Sony WH-1000XM5",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_tech_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_tech_1",
+                      "text": "$349.99",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_tech_1",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Sony WH-1000XM5 a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_tech_2",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_tech_2",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_tech_2",
+                  "url": "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_tech_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_tech_2",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_tech_2",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_tech_2",
+                          "text": "4.8",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_tech_2",
+                      "text": "WIRELESS",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_tech_2",
+                  "text": "Keychron Q1 Pro RGB",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_tech_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_tech_2",
+                      "text": "$199.00",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_tech_2",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Keychron Q1 Pro RGB a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_tech_3",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_tech_3",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_tech_3",
+                  "url": "https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_tech_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_tech_3",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_tech_3",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_tech_3",
+                          "text": "4.6",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_tech_3",
+                      "text": "-15%",
+                      "background_color": "support_warning_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_tech_3",
+                  "text": "Bose QuietComfort 45",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_tech_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_tech_3",
+                      "text": "$279.00",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_tech_3",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Bose QuietComfort 45 a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "type": "box",
+        "id": "hdr_fashion_inset",
+        "padding": {
+          "horizontal": 16
+        },
+        "content_alignment": "START",
+        "children": [
+          {
+            "type": "text",
+            "id": "hdr_fashion_title",
+            "text": "Moda Urbana",
+            "style": "titleMedium",
+            "color": "highlight_darkest"
+          }
+        ]
+      },
+      {
+        "type": "lazy_row",
+        "id": "row_fashion",
+        "spacing": 12,
+        "padding": {
+          "horizontal": 16
+        },
+        "items": [
+          {
+            "type": "card",
+            "id": "product_card_fashion_1",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_fashion_1",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_fashion_1",
+                  "url": "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_fashion_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_fashion_1",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_fashion_1",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_fashion_1",
+                          "text": "4.8",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_fashion_1",
+                      "text": "EXCLUSIVE",
+                      "background_color": "support_success_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_fashion_1",
+                  "text": "Cyber Stealth Bomber",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_fashion_1",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_fashion_1",
+                      "text": "$129.00",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_fashion_1",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Cyber Stealth Bomber a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_fashion_2",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_fashion_2",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_fashion_2",
+                  "url": "https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_fashion_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_fashion_2",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_fashion_2",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_fashion_2",
+                          "text": "4.9",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_fashion_2",
+                      "text": "RETRO",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_fashion_2",
+                  "text": "Old Skool Canvas 85",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_fashion_2",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_fashion_2",
+                      "text": "$79.99",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_fashion_2",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Old Skool Canvas 85 a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "type": "card",
+            "id": "product_card_fashion_3",
+            "corner_radius": 16,
+            "background_color": "neutral_light_lightest",
+            "border_color": "neutral_dark_light",
+            "border_width": 1,
+            "elevation": 2,
+            "padding": {
+              "horizontal": 12,
+              "vertical": 12
+            },
+            "frame": {
+              "width": 190,
+              "min_width": 190
+            },
+            "child": {
+              "type": "container",
+              "id": "prod_inner_product_card_fashion_3",
+              "direction": "VERTICAL",
+              "spacing": 8,
+              "children": [
+                {
+                  "type": "image",
+                  "id": "prod_img_product_card_fashion_3",
+                  "url": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500",
+                  "content_scale": "CROP",
+                  "frame": {
+                    "height": 110
+                  },
+                  "corner_radius": 8
+                },
+                {
+                  "type": "container",
+                  "id": "prod_meta_product_card_fashion_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "container",
+                      "id": "prod_rating_product_card_fashion_3",
+                      "direction": "HORIZONTAL",
+                      "alignment": "CENTER",
+                      "spacing": 4,
+                      "corner_radius": 999,
+                      "background_color": "neutral_dark_medium",
+                      "padding": {
+                        "horizontal": 8,
+                        "vertical": 3
+                      },
+                      "children": [
+                        {
+                          "type": "icon",
+                          "id": "prod_star_product_card_fashion_3",
+                          "name": "star",
+                          "size": 12,
+                          "tint": "support_warning_medium"
+                        },
+                        {
+                          "type": "text",
+                          "id": "prod_score_product_card_fashion_3",
+                          "text": "4.7",
+                          "style": "labelSmall",
+                          "color": "neutral_light_lightest"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "badge",
+                      "id": "prod_badge_product_card_fashion_3",
+                      "text": "-30%",
+                      "background_color": "support_warning_medium",
+                      "text_color": "neutral_light_lightest"
+                    }
+                  ]
+                },
+                {
+                  "type": "text",
+                  "id": "prod_title_product_card_fashion_3",
+                  "text": "Tactical Roll-top 24L",
+                  "style": "titleSmall",
+                  "color": "neutral_light_lightest",
+                  "max_lines": 1
+                },
+                {
+                  "type": "container",
+                  "id": "prod_price_row_product_card_fashion_3",
+                  "direction": "HORIZONTAL",
+                  "alignment": "CENTER",
+                  "arrangement": "SPACE_BETWEEN",
+                  "children": [
+                    {
+                      "type": "text",
+                      "id": "prod_price_product_card_fashion_3",
+                      "text": "$65.00",
+                      "style": "titleMedium",
+                      "color": "highlight_darkest"
+                    },
+                    {
+                      "type": "button",
+                      "id": "prod_add_product_card_fashion_3",
+                      "title": "Add",
+                      "variant": "FILLED",
+                      "background_color": "highlight_darkest",
+                      "text_color": "neutral_dark_darkest",
+                      "corner_radius": 8,
+                      "actions": [
+                        {
+                          "type": "show_snackbar",
+                          "message": "Tactical Roll-top 24L a\u00f1adido al carrito \ud83d\udecd\ufe0f"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
           }
         ]
       }

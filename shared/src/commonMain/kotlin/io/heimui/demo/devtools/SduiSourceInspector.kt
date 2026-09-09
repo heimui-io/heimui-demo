@@ -36,7 +36,7 @@ class SduiSourceInspector(
 ) {
     /** Returns the payload text for [screenId], or a failure the sheet can render. */
     suspend fun sourceOf(screenId: String): Result<String> = try {
-        val response = httpClient.get("${baseUrl.trimEnd('/')}/screens/$screenId")
+        val response = httpClient.get("${baseUrl.trimEnd('/')}/$screenId")
         if (response.status.isSuccess()) {
             Result.success(response.bodyAsText())
         } else {

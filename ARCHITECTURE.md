@@ -81,12 +81,17 @@ sheets. The app only handles what it alone can decide.
 
 ## Screens come from the SDK's real repository
 
-Screen ids are relative paths:
+Screen ids are relative paths, resolved against the base URL and nothing else — the SDK
+contributes no segment of its own, because where payloads live is the backend's decision:
 
 ```
-{baseUrl}/screens/{screenId}
-  → https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui/screens/hub/hub_screen.json
+{baseUrl}/{screenId}
+  → https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui/screens
+  + hub/hub_screen.json
 ```
+
+That is why the base URL here ends in `/screens`: it is where this repository keeps them, so the
+ids stay the short `vertical/screen.json` the catalogue already uses.
 
 That means `HeimUI.initialize()` needs no networking code of our own, and it makes the demo
 genuinely exercise the cache, ETag revalidation, stale-while-revalidate, timeouts and the circuit

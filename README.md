@@ -80,14 +80,17 @@ That file is not version controlled, so a host that only resolves on your machin
 `main`:
 
 ```properties
-sdui.baseUrl=http://10.0.2.2:8080
+sdui.baseUrl=http://10.0.2.2:8080/screens
 ```
 
+A screen id resolves against this value verbatim — the SDK adds no path segment of its own, so the
+`/screens` these payloads are filed under belongs in the base URL, not in the SDK.
+
 `10.0.2.2` is the Android emulator's alias for your host — on the iOS simulator use
-`http://localhost:8080`. Two things worth serving there:
+`http://localhost:8080/screens`. Two things worth serving there:
 
 ```bash
-python3 -m http.server 8080          # from the repo root; add /sdui to the URL above
+python3 -m http.server 8080          # from the repo root; use /sdui/screens in the URL above
 cd ../heimui-studio && docker compose up   # a HeimUI Studio; the URL above is already right
 ```
 

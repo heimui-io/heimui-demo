@@ -33,7 +33,7 @@ import org.jetbrains.compose.resources.stringResource
  * 1. A payload dispatched `navigate` with a `screen_id` and `params`.
  * 2. The app turned that into a destination — see `DemoNavigationViewModel.navigateTo`.
  * 3. Here, those params are handed to [HeimScreen] as [queryParams], and the SDK appends them to
- *    the request: `.../screens/ecommerce/product_detail.json?product_id=sku_neural_x1`.
+ *    the request: `{baseUrl}/ecommerce/product_detail.json?product_id=sku_neural_x1`.
  * 4. The backend answers with the detail for *that* item.
  *
  * Note how little the app knows: it never learns what a product is, what fields it has, or how

@@ -23,18 +23,23 @@ fun localProperty(name: String): Provider<String> =
 
 // Where the showcase fetches its screens from.
 //
+// This is a full path, not just an origin: the SDK resolves a screen id against it verbatim and
+// contributes no segment of its own, so where the payloads sit is this app's decision to state.
+// Here they sit under `sdui/screens/`, so the base carries `/screens` and an id stays the short
+// `vertical/screen.json` the catalogue already uses.
+//
 // The default is GitHub Raw, so a fresh clone renders all 17 screens with no backend to stand up.
 // Pointing it at a local HeimUI Studio is one line in `local.properties`, which is not version
 // controlled — which is the point: nobody can commit a `localhost` that resolves only on the
 // machine that wrote it, and a release build never ships one either.
 //
-//   sdui.baseUrl=http://10.0.2.2:8080
+//   sdui.baseUrl=http://10.0.2.2:8080/screens
 //
 // `-PsduiBaseUrl=...` overrides it for a single build, the way `-PheimuiCore` does for the SDK.
 val sduiBaseUrl: Provider<String> =
     providers.gradleProperty("sduiBaseUrl")
         .orElse(localProperty("sdui.baseUrl"))
-        .orElse("https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui")
+        .orElse("https://raw.githubusercontent.com/heimui-io/heimui-demo/main/sdui/screens")
 
 // Which build of the SDK the showcase compiles against. Empty unless someone asked for a local
 // one, in which case the coordinate carries a `-LOCAL` suffix so a failure always names the build
