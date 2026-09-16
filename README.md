@@ -35,6 +35,15 @@ on the next open.
 
 ---
 
+## The ecosystem
+
+| | | |
+| --- | --- | --- |
+| **[Core SDK](https://github.com/heimui-io/heimui-core)** | Renders the screens on Android and iOS | Apache 2.0 |
+| **[Documentation](https://heimui.io)** | Guides, the screen schema, hydration and signing | [heimui-docs](https://github.com/heimui-io/heimui-docs) |
+| **[Demo app](https://github.com/heimui-io/heimui-demo)** | A full integration you can run | Apache 2.0 |
+| **HeimUI Studio** | The visual editor that authors and publishes screens | Commercial — [heimui.io/studio](https://heimui.io/studio/) |
+
 ## What this repo is for
 
 It is not a feature tour. It is the app we point people at when they ask *how do I wire this up*,
