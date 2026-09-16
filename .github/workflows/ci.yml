@@ -83,6 +83,23 @@ jobs:
       - name: Assemble debug
         run: ./gradlew :androidApp:assembleDebug --stacktrace
 
+      # The build that matters. `release` has minification and resource shrinking on, so this is the
+      # only step that actually runs R8 over the SDK -- against the published AAR, with whatever keep
+      # rules that AAR really carries. A debug build proves nothing about it: the classic failure is
+      # a screen that parses in debug and fails in release, and it only appears here.
+      - name: Assemble minified release
+        run: ./gradlew :androidApp:assembleRelease --stacktrace
+
+      # R8 reports what it removed. If the SDK's DTOs ever stop being kept, they show up in this file
+      # long before a device does, so it is worth keeping when a build goes wrong.
+      - name: R8 report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: r8-usage
+          path: androidApp/build/outputs/mapping/release/
+          if-no-files-found: warn
+
       # Names the version that was actually resolved. When a release goes wrong the useful question
       # is "which one did it build against", and a green check alone does not answer it.
       - name: Report resolved SDK version
