@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="art/heimui-banner.jpg" alt="HeimUI" width="100%" />
+<img src="https://heimui.io/art/heimui-banner.jpg" alt="HeimUI" width="100%" />
 
 # HeimUI Demo
 
