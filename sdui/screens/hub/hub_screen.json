@@ -340,6 +340,20 @@
             "url": "heimui://showcase/fintech"
           }
         ]
+      },
+      {
+        "type": "button",
+        "id": "btn_simulate_push",
+        "title": "Simulate an in-app notification",
+        "icon": "notifications",
+        "variant": "OUTLINED",
+        "is_full_width": true,
+        "actions": [
+          {
+            "type": "custom",
+            "name": "simulate_push"
+          }
+        ]
       }
     ]
   }

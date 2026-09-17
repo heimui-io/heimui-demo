@@ -24,6 +24,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import io.heimui.core.domain.model.action.CustomAction
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -122,11 +127,32 @@ fun HubScreen(
                 .consumeWindowInsets(paddingValues)
                 .background(MaterialTheme.colorScheme.background)
         ) {
+            // An in-app notification is an ordinary HeimUI screen drawn over this one. What the
+            // app owns is *when*: here a button stands in for the push a real app would receive,
+            // because a showcase cannot wait for one.
+            var notification by remember { mutableStateOf<String?>(null) }
+
             HeimScreen(
                 screenId = hubScreenId,
-                                onAction = onAction,
+                onAction = { action ->
+                    if (action is CustomAction && action.name == "simulate_push") {
+                        notification = NOTIFICATION_SCREEN_ID
+                    } else {
+                        onAction(action)
+                    }
+                },
+                overlayScreenId = notification,
+                onOverlayDismiss = { notification = null },
                 modifier = Modifier.fillMaxSize()
             )
         }
     }
 }
+
+/**
+ * The screen the showcase draws as an in-app notification.
+ *
+ * Nothing marks it as a notification: it is published, signed and cached like every other screen,
+ * and the only thing that makes it one is being passed as `overlayScreenId`.
+ */
+private const val NOTIFICATION_SCREEN_ID = "notifications/order_shipped.json"

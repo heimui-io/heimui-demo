@@ -1,0 +1,71 @@
+{
+  "id": "order_shipped",
+  "version": "1.0.0",
+  "title": "Order shipped",
+  "apply_safe_insets": true,
+  "root": {
+    "type": "box",
+    "id": "notif_root",
+    "content_alignment": "TOP",
+    "children": [
+      {
+        "type": "card",
+        "id": "notif_card",
+        "background_color": "#161D2F",
+        "border_color": "#00E5FF",
+        "border_width": 1,
+        "corner_radius": 14,
+        "padding": 14,
+        "child": {
+          "type": "container",
+          "id": "notif_row",
+          "direction": "HORIZONTAL",
+          "spacing": 12,
+          "children": [
+            {
+              "type": "icon",
+              "id": "notif_icon",
+              "name": "local_shipping",
+              "size": 28,
+              "tint": "#00E5FF"
+            },
+            {
+              "type": "container",
+              "id": "notif_text",
+              "direction": "VERTICAL",
+              "spacing": 2,
+              "weight": 1,
+              "children": [
+                {
+                  "type": "text",
+                  "id": "notif_title",
+                  "text": "Your order shipped",
+                  "style": "titleSmall",
+                  "color": "#FFFFFF"
+                },
+                {
+                  "type": "text",
+                  "id": "notif_body",
+                  "text": "Arriving Thursday · #10429",
+                  "style": "bodySmall",
+                  "color": "#94A3B8"
+                }
+              ]
+            },
+            {
+              "type": "button",
+              "id": "notif_dismiss",
+              "title": "Close",
+              "variant": "TEXT",
+              "actions": [
+                {
+                  "type": "dismiss_modal"
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
