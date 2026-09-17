@@ -44,6 +44,12 @@ class DemoTelemetryObserver : HeimTelemetryObserver {
             is HeimTelemetryEvent.ScreenRefreshFailed ->
                 Entry("stale", "${event.screenId}: ${event.reason}", true)
 
+            // The server answered with a 4xx and a screen of its own. Not a failure for the reader,
+            // who is looking at what the server meant them to see -- but it is the signal a real app
+            // acts on: a 401 here is a dead session.
+            is HeimTelemetryEvent.ScreenRefused ->
+                Entry("refused", "${event.screenId} · HTTP ${event.statusCode}", true)
+
             is HeimTelemetryEvent.ScreenError ->
                 Entry("error", "${event.screenId}: ${event.errorMessage}", true)
 

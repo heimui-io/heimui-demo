@@ -22,6 +22,8 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Restaurant
 import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.LocalShipping
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.TwoWheeler
 import androidx.compose.material.icons.filled.Widgets
@@ -56,6 +58,8 @@ object MaterialHeimIconProvider : HeimIconProvider {
     private val icons: Map<String, ImageVector> = mapOf(
         // Verticals, as named by the hub payload.
         "shopping_cart" to Icons.Default.ShoppingCart,
+        "local_shipping" to Icons.Default.LocalShipping,
+        "notifications" to Icons.Default.Notifications,
         "account_balance" to Icons.Default.AccountBalance,
         "restaurant" to Icons.Default.Restaurant,
         "diamond" to Icons.Default.Diamond,
